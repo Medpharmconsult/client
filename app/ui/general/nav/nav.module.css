@@ -1,0 +1,24 @@
+.nav{
+    display: flex;
+    justify-content: space-between;
+    height: 10vh;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    
+}
+.navContainer{
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+    color: #59647C;
+    /* width: 70%; */
+}
+
+.link{
+    background-color: #1341A3;
+    color: #fff;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 3rem;
+}

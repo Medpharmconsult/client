@@ -1,0 +1,43 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.chartContainer{
+    border: 2px solid black;
+}
+.chartHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #1341A3;
+    border-bottom: solid 2px black;
+    gap: 7px;
+}
+.chartBody{
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(5, 1fr)
+}
+.chartBody div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1341A3;
+    color: #fff;
+    height: 3rem;
+    width: 3rem;
+    cursor: pointer;
+    width: fit-content;
+    padding: 2px;
+
+}
+.arrow{
+    border: 2px solid black;
+    cursor: pointer;
+}
+.timeDiv{
+    width: fit-content;
+}

@@ -1,0 +1,25 @@
+.header{
+    text-align: center;
+}
+.contactListContainer{
+    padding: 2rem;
+}
+.contactList{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style-type: none;
+    padding: 1rem;
+}
+.imgContainer{
+    height: 5rem;
+    width: 5rem;
+}
+.contactContainer{
+    display: flex;
+    flex-direction: column;
+    height: 5rem;
+}
+.contactContainer h3{
+    margin-bottom: 0.5rem;
+}

@@ -1,0 +1,43 @@
+.container{
+     /* display: flex; 
+     justify-content: center;
+    align-items: center;   */
+    overflow: auto;
+    height: 100%;
+    
+    
+}
+.imageHolder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    height: 7rem;
+    width: 7rem;
+    background-color: purple;
+}
+.imgText{
+    color: #8AD7F5;
+}
+.profGrid{
+   
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);  
+    justify-content: center;
+    align-items: center;
+    max-width: fit-content;
+    margin: auto;
+    padding: 2rem;
+}
+.profData{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profGrid p{
+    text-align: center;
+}
+

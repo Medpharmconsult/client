@@ -1,11 +1,12 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,12 +17,34 @@
   }
 }
 
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-size: 16px; 
+  
+}
+
+h1{
+  color: #1341A3;
+  font-size: 3rem;
+}
+@media (max-width: 950px) {
+  h1{
+    font-size: 2rem;
+  }
+}
+@media (max-width: 630px) {
+  h1{
+    font-size: 1.5rem;
+  }
+}
+
+h2{
+  color: #1341A3;
+  font-size: 2rem;
 }

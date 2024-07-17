@@ -1,0 +1,16 @@
+.container{
+
+    background-color: #1341A3;
+    color: white;
+    width: 20%;
+}@media (max-width: 750px) {
+    .container, .loading{
+        display: none;
+    }
+    
+}
+
+.container ul{
+    height: 100%;
+}
+

@@ -1,0 +1,8 @@
+.screen{
+    width: 80%;
+    background-color: #E5E8F0;;
+}@media (max-width: 750px) {
+    .screen{
+        width: 100%;
+    }
+}

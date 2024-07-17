@@ -1,0 +1,54 @@
+.container{
+    display: flex;
+    margin-top: 10rem;
+    background-color: #1341A3;
+    color: #fff;
+    padding: 3rem 5rem
+}
+@media (max-width: 690px) {
+    .container{
+        display: block;
+    }
+  }
+.marginTop{
+    margin-top: 1rem;
+}
+
+.text{
+    color: #fff;
+}
+.btnContainer{
+    margin-top: 2rem;
+}
+
+.left{
+
+width: 50%;
+}@media (max-width: 690px) {
+    .left{
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+  }
+
+.right{
+    
+    width: 50%;
+    padding-left: 8rem;
+}
+@media (max-width: 690px) {
+    .right{
+        width: 100%;
+        padding-left: 0rem;
+    }
+  }
+
+
+.para{
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.right li{
+    margin-bottom: 1rem;
+}

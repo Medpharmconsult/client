@@ -1,0 +1,27 @@
+.container{
+    position: fixed;
+    height: 90vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding-right: 2rem;
+}
+
+.close{
+    font-size: 2rem;
+    color: #fff;
+    
+}
+
+.closeContainer{
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+.hide{
+    display: none;
+}
+.contentContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

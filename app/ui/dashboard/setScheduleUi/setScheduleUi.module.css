@@ -1,0 +1,42 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.formContainer{
+    background-color: aqua;
+    padding: 2rem;
+    border-radius: 10px;
+}
+.monthDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.dayRangeText{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.dayRange{
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+.timeRangeText{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.timeRange{
+    display: flex;
+    gap: 2rem;
+}
+.rangeBtnContainer{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+.zone{
+    margin-bottom: 1rem;
+}

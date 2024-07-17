@@ -1,0 +1,32 @@
+.big{
+    width: 250px;
+    height: 40px;
+    font-size: 20px;
+    background-color: #1341A3;
+    color: #fff;
+    border-radius: 20px;
+    border: solid #1341A3 2px;
+}
+
+.blueWhiteBorder{
+    width: 250px;
+    height: 40px;
+    font-size: 20px;
+    background-color: #1341A3;
+    color: #fff;
+    border-radius: 20px;
+    border: solid #fff 2px;
+}
+
+.bigWhite{
+    width: 250px;
+    height: 40px;
+    font-size: 20px;
+    color: #1341A3;
+    border-radius: 20px;
+    border: solid #1341A3 2px;
+}
+
+.rightMargin{
+    margin-right: 20px;
+}
