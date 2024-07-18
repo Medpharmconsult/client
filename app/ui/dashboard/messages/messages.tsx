@@ -8,7 +8,7 @@ export default function MessagesUI(){
     const socket = useSocket()
     const [contactList, setContactList] = useState<{text: string, sender: {firstName: string, lastName: string, profileImg: string}}[]>([])
     
-    socket.on("message", (data)=>{
+    socket?.on("message", (data)=>{
         console.log(data)
         setContactList([data, ...contactList])
     })
