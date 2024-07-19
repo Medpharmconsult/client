@@ -12,6 +12,12 @@
     height: 10rem;
     width: 10rem;
     background-color: purple;
+}@media (max-width: 500px) {
+    .imgHolder{
+        height: 9rem;
+        width: 9rem;
+        
+    }
 }
 .imgText{
     color: #8AD7F5;
@@ -21,15 +27,23 @@
     display: flex;
     justify-content: space-between;
 }
+.name{
+    color: black;
+}
 .rightHead{
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
     width: 50%;
-  
-    
+
 }
+
+.rightHead p{
+    color: black;
+        
+}
+
 
 .leftHead{
     display: flex;
@@ -46,4 +60,9 @@
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
+}@media (max-width: 500px) {
+    .btnSection button{
+        width: 11rem;
+        
+    }
 }

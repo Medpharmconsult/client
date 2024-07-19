@@ -1,11 +1,11 @@
 .big{
-    width: 250px;
-    height: 40px;
+    width: 25rem;
     font-size: 20px;
     background-color: #1341A3;
     color: #fff;
     border-radius: 20px;
     border: solid #1341A3 2px;
+    padding: 3px;
 }
 
 .blueWhiteBorder{
@@ -16,15 +16,16 @@
     color: #fff;
     border-radius: 20px;
     border: solid #fff 2px;
+    padding: 3px;
 }
 
 .bigWhite{
     width: 250px;
-    height: 40px;
     font-size: 20px;
     color: #1341A3;
     border-radius: 20px;
     border: solid #1341A3 2px;
+    padding: 3px;
 }
 
 .rightMargin{

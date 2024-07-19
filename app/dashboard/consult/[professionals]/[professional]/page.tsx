@@ -66,7 +66,7 @@ export default function Professional({params}: {params: {professional: string}})
               }
               
             </div>
-            <h3>{`${apiData.responseData.professional.firstName} ${apiData.responseData.professional.lastName}`}</h3>
+            <h3 className= {styles.name}>{`${apiData.responseData.professional.firstName} ${apiData.responseData.professional.lastName}`}</h3>
 
           </div>
           <div className={styles.rightHead}>

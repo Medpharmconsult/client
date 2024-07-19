@@ -3,14 +3,14 @@ import Image from 'next/image';
 
 const specialtiesData = [
     {name: "Doctors", icon: "/service-doctor.jpg"}, {name: "Pharmacist", icon: "/service-pharmacist.jpg"}, {name: "Psychologist", icon: "/service-psychologist.jpg"},
-    {name: "Mental ", icon: "/service-therapist.jpg"}
+    {name: "Mental health therapist", icon: "/service-therapist.jpg"}
 ];
 
 const medicalConditions = [
     "Anxiety", "Depression", "Pregnancy", "Delayed period", "Headache", 
     "Acne", "Chest pain", "Erectile dysfunction", "Unprotected sex", "Backpain",
     "Diabetes", "Stress", "Fever", "HIV", "Fungal Infection", 
-    "Constipation", "Masturbation", "Diarrhea", "Premature Ejaculation", "Sore Throat"
+    "Constipation", "Cancer", "Diarrhea", "Premature Ejaculation", "Sore Throat"
 
 ]
 //const medicalConditions2 = ["Diabetes", "Stress", "Fever", "HIV", "Fungal Infection", "Constipation", "Masturbation", "Diarrhea", "Premature Ejaculation", "Sore Throat"]
@@ -51,11 +51,7 @@ export default function ServicesSection() {
                         <div className={styles.illness} key={index}><strong>{condition}</strong></div>
                     ))}
                 </div>
-                {/* <div className={styles.illnessContainer + " " + styles.illnessContainerBottom}>
-                    {medicalConditions2.map((condition, index) => (
-                        <div className={styles.illness} key={index}><strong>{condition}</strong></div>
-                    ))}
-                </div> */}
+                
             </div>
         </div>
     )

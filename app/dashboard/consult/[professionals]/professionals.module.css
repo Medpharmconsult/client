@@ -29,6 +29,11 @@
     max-width: fit-content;
     margin: auto;
     padding: 2rem;
+}@media (max-width: 500px) {
+    .profGrid{
+        grid-template-columns: repeat(2, 1fr);
+        
+    }
 }
 .profData{
     display: flex;
