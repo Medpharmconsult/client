@@ -14,8 +14,8 @@
     background-color: purple;
 }@media (max-width: 500px) {
     .imgHolder{
-        height: 9rem;
-        width: 9rem;
+        height: 8rem;
+        width: 8rem;
         
     }
 }
@@ -28,6 +28,7 @@
     justify-content: space-between;
 }
 .name{
+    
     color: black;
 }
 .rightHead{

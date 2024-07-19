@@ -1,5 +1,5 @@
 .big{
-    width: 25rem;
+    width: 15rem;
     font-size: 20px;
     background-color: #1341A3;
     color: #fff;
@@ -9,7 +9,7 @@
 }
 
 .blueWhiteBorder{
-    width: 250px;
+    width: 15rem;
     height: 40px;
     font-size: 20px;
     background-color: #1341A3;
@@ -20,7 +20,7 @@
 }
 
 .bigWhite{
-    width: 250px;
+    width: 15rem;
     font-size: 20px;
     color: #1341A3;
     border-radius: 20px;
