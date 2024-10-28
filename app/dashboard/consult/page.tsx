@@ -1,7 +1,5 @@
-import ConsultUi  from "../../ui/dashboard/consultUi/consultUi"
-//import styles from "./dashboard.module.css"
-
+import ConsultUi from "@/app/ui/dashboard/consult/ConsultUi";
 
 export default function Consult() {
-  return (<ConsultUi/>)
+  return <ConsultUi />;
 }

@@ -1,97 +1,108 @@
-"use client"
-import { useState, useEffect } from 'react';
-import {useRouter, usePathname} from "next/navigation"
-import styles from "@/app/dashboard/consult/[professionals]/[professional]/professional.module.css"
-import { apiFetcher, localStorageHandler } from "@/app/lib/utilities"
-import RoundImage from '@/app/ui/general/roundImage/roundImage';
-import { Button } from '@/app/ui/general/button/button';
+import Card from "@/app/_components/Card";
+import ProfileImg from "@/app/_components/ProfileImage";
+import Row from "@/app/_components/Row";
+import AppointmentCalendar from "@/app/ui/dashboard/consult/appointment/AppointmentCalendar";
+import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
+import ChatButton from "@/app/ui/dashboard/consult/ChatButton";
+import NoResults from "@/app/ui/dashboard/general/NoResults";
+import { getMonthAppointments, getProfessional } from "@/app/_lib/services";
+import { getCurrentMonth, getNextMonth } from "@/app/_lib/utilities";
+import { BsEnvelope, BsPhone } from "react-icons/bs";
 
-interface ApiResponse{
-  statusCode: number;
-  responseData: {
-    msg: string, 
-    professional: {_id: string, firstName: string, lastName: string, username:string, profileImg: string,
-      profession: "string", yoe: number
-    }
+export default async function Professional({
+  params,
+}: {
+  params: { professional: string };
+}) {
+  const res = await getProfessional(params.professional);
+  const professional = res?.responseData.professional;
+  const contact = {
+    firstName: professional.firstName,
+    lastName: professional.lastName,
+    email: professional.email,
+    contactId: professional._id,
+    profileImg: professional.profileImg,
+  };
+  const currentAppointments = await getMonthAppointments(
+    professional?._id,
+    getCurrentMonth()
+  );
 
-  };  
-}
+  const nextAppointments = await getMonthAppointments(
+    professional?._id,
+    getNextMonth()
+  );
 
-export default function Professional({params}: {params: {professional: string}}) {
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [apiData, setApiData] = useState({} as ApiResponse);
-  const router = useRouter()
-  const pathName = usePathname()
-  useEffect(()=>{
-      
-    async function fetcher() {
-      const professional = await apiFetcher(`${process.env.NEXT_PUBLIC_Host_Name}/get-professional?username=${params.professional}`, {method: "GET"}) as ApiResponse
-      setApiData(professional)
-      setIsLoading(false)
-    }
-  
-    fetcher()
-      
-  
-  },[])
-
-  const appointmentHandler = ()=>{
-    localStorage.setItem("profID", `${apiData.responseData.professional._id}`)
-    
-    router.push(`${pathName}/appointment_days`)
-  }
-  const messageHandler = ()=>{
-    localStorage.setItem("profID", `${apiData.responseData.professional._id}`)
-    localStorage.setItem("msgReceiver", `${apiData.responseData.professional._id}`)
-    router.push(`/dashboard/message`)
-  }
-  
-    
-  
-  let ui;
-  
-  if(isLoading){
-    ui = <div>LOADING...</div>
-  }else{
-    ui=(  
-      <div className={styles.profile}>
-        <div className={styles.head}>
-          <div className={styles.leftHead}>
-            <div className={styles.imgHolder}>
-              {
-                apiData.responseData.professional.profileImg ?
-                <RoundImage src={`${process.env.NEXT_PUBLIC_Host_Name}${apiData.responseData.professional.profileImg}`} alt="image of health professional"/> :
-                <h1 className= {styles.imgText}>{apiData.responseData.professional.firstName.at(0)}</h1>
-              }
-              
+  if (professional)
+    return (
+      <DashboardScreen
+        title={professional.profession}
+        subtitle={`${professional.lastName} ${professional.firstName}`}
+      >
+        <Row classname="lg:flex-row-reverse ">
+          <Row.Column breakPoints="lg:w-7/12 xl:w-8/12">
+            <div className="bg-white rounded-[5px] border-[1px] border-grey-300 ">
+              <div>
+                <div className=" flex-wrap flex xs:items-center gap-6 px-4 py-6">
+                  <div>
+                    <ProfileImg
+                      src={`${process.env.NEXT_PUBLIC_Host_Name}${professional?.profileImg}`}
+                      alt="prof-img"
+                      size={160}
+                      hasImg={professional?.profileImg ? true : false}
+                      altImg={
+                        <h1 className="text-[68px]/[1] font-semibold pointer-events-none uppercase">
+                          {professional.firstName.at(0)}
+                        </h1>
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-y-2">
+                    <h3 className="font-medium tracking-normal lg:text-[28px]/[36px] text-[24px]/[32px]">{`${professional.lastName} ${professional.firstName}`}</h3>
+                    <h3 className="text-grey-100 font-medium uppercase text-[14px]/[20px]  tracking-[0.1px]">
+                      {professional.yoe} years experience
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <ul className="p-4 flex items-center gap-y-2 gap-x-6 flex-wrap bg-grey-500 text-[15px] text-grey-100">
+                <li className="flex items-center gap-x-2">
+                  <BsEnvelope size={18} className="text-grey-100" />
+                  {professional.email}
+                </li>
+                <li className="flex items-center gap-x-1">
+                  <BsPhone size={18} className="text-grey-100" />
+                  {professional.phoneNo}
+                </li>
+              </ul>
+              <div className="px-4 py-6">
+                <p>
+                  {`Hello, my name is ${professional.firstName} ${professional.lastName}. I am a dedicated ${professional.profession} with ${professional.yoe} years of experience, committed to providing the highest standard of medical care. My training and experiences have equipped me with the knowledge and skills necessary to address a wide range of health concerns. I look forward to serving you and ensuring your health and well-being.`}
+                </p>
+              </div>
+              <div className="px-4 py-6 border-t-[1px] border-grey-300">
+                <ChatButton contact={contact} />
+              </div>
             </div>
-            <h3 className= {styles.name}>{`${apiData.responseData.professional.firstName} ${apiData.responseData.professional.lastName}`}</h3>
-
-          </div>
-          <div className={styles.rightHead}>
-            <p>
-              Hi My name is {`${apiData.responseData.professional.firstName} ${apiData.responseData.professional.lastName} `} 
-              and i am a {apiData.responseData.professional.profession} with {apiData.responseData.professional.yoe} years experience
-              I hope to give you the best medical service
-            </p>
-          </div>
-
-        </div>
-        <div className={styles.btnSection}>
-          <Button onClick={appointmentHandler} styleType='big' margin='rightMargin'>Book Appointment</Button>
-          <Button onClick={messageHandler} styleType='bigWhite' margin=''>Send Message</Button>
-        </div>
-        
-      
-      </div>
-    ) 
+          </Row.Column>
+          <Row.Column breakPoints="lg:w-5/12 xl:w-4/12">
+            <Card title="Book appointment">
+              <AppointmentCalendar
+                currentAppointments={currentAppointments}
+                nextAppointments={nextAppointments}
+                profID={professional?._id}
+              />
+            </Card>
+          </Row.Column>
+        </Row>
+      </DashboardScreen>
+    );
+  else {
+    return (
+      <NoResults
+        title="Professional not found"
+        text="Could not find the required professional."
+      />
+    );
   }
-  
-  return (
-    <div className={styles.container}>
-      {ui}
-        
-    </div>
-  )
 }

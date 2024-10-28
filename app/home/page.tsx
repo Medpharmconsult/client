@@ -1,27 +1,22 @@
-//import Nav from "@/app/ui/general/nav/nav"
-import Welcome from '@/app/ui/home/welcomeSection/welcome' 
-import ServicesSection from "../ui/home/servicesSection/services"
-import AssuranceSection from "@/app/ui/home/assuranceSection/assurance"
-import StaffSection from "../ui/home/staffSection/staff"
+import Hero from "@/app/ui/home/Hero";
+import MedicalConditions from "@/app/ui/home/MedicalConditions";
+import Nav from "@/app/ui/home/Nav";
+import Specialities from "@/app/ui/home/Specialties";
+import ContactUs from "@/app/ui/home/ContactUs";
+import Staff from "@/app/ui/home/Staff";
+export const metadata = {
+  title: "Home",
+};
 
 export default function Home() {
   return (
-
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-     
-      <section>
-        <Welcome/>
-      </section>
-
-      <section>
-        <ServicesSection/>
-      </section>
-      <AssuranceSection/>
-      <StaffSection/>
-      
-    </main>
-  )
-  
+    <>
+      <Nav />
+      <Hero />
+      <Specialities />
+      <MedicalConditions />
+      <ContactUs />
+      <Staff />
+    </>
+  );
 }
-
-//<Nav/>

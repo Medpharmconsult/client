@@ -1,20 +1,23 @@
-import DashboardMenu from "../ui/dashboard/dashboardMenu/dashboardMenu"
-import DashboardScreen from "../ui/dashboard/dashboardScreen/dashboardScreen"
-import MobileDashboardMenu from "../ui/dashboard/mobileDashboardMenu/mobileDashboardMenu"
-import styles from "./dashboard.module.css"
+import DashboardContent from "../ui/dashboard/general/DashboardContent";
+import { getSession } from "../_lib/services";
+import { DashboardContextProvider } from "@/context/DashboardContext";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  
-    return (
-  
-      <main className={styles.page}>
-        <MobileDashboardMenu/>
-        <DashboardMenu/>
-        <DashboardScreen>
-          {children}
-        </DashboardScreen>
-        
-      </main>
-    )
-    
-  }
+export const metadata = {
+  title: "Dashboard",
+};
+
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactElement;
+}) {
+  const session = await getSession();
+
+  return (
+    <div className="flex min-h-dvh bg-grey-200">
+      <DashboardContextProvider>
+        <DashboardContent session={{ ...session }}>{children}</DashboardContent>
+      </DashboardContextProvider>
+    </div>
+  );
+}

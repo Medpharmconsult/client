@@ -1,26 +1,12 @@
-"use client"
+import SigninForm from "@/app/ui/auth/signin/SigninForm";
 
-import {useRouter} from "next/navigation";
-import { useEffect } from "react";
-import LoginForm from "@/app/ui/auth/loginForm/loginForm";
-import styles from "@/app/auth/adminAuth/adminAuth.module.css";
-
-
-
-
-export default function DashboardMenu() {
-  
-  useEffect(()=>{
-  
-  }, [])
-
-  const router = useRouter()
- 
-  
-  
+export const metadata = {
+  title: "Admin Login",
+};
+export default function Page() {
   return (
-    <div className={styles.loginContainer}>
-        <LoginForm user="admin"/>
+    <div>
+      <SigninForm isAdmin={true} />
     </div>
-  )
+  );
 }

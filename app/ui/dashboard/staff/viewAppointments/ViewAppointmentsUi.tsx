@@ -1,0 +1,177 @@
+"use client";
+import Form from "@/app/_components/Form";
+import NoResults from "../../general/NoResults";
+import { timeMap } from "@/app/_lib/utilities";
+import { useState } from "react";
+import { BsSearch } from "react-icons/bs";
+
+export default function ViewAppointmentsUi({
+  appointments,
+}: {
+  appointments: {
+    year: number;
+    month: string;
+    day: number;
+    startTime: number;
+    endTime: number;
+    patientData: {
+      firstName: string;
+      lastName: string;
+    };
+  }[];
+}) {
+  const [search, setSearch] = useState("");
+  const tableHeadings = ["Patient name", "Date", "Start time", "End time"];
+  const PAGE_SIZE = 10;
+  const mainAppointments = appointments
+    ?.map((app) => app)
+    ?.sort(
+      (a, b): number =>
+        new Date(`${b.month} ${b.day} ${b.year}`).getTime() -
+        new Date(`${a.month} ${a.day} ${a.year}`).getTime()
+    );
+  const sortedAppointments = mainAppointments?.filter(
+    (app) =>
+      (app.patientData.lastName + app.patientData.firstName)
+        .toLowerCase()
+        .includes(search.replace(/\s+/g, "").toLowerCase()) ||
+      (app.patientData.firstName + app.patientData.lastName)
+        .toLowerCase()
+        .includes(search.replace(/\s+/g, "").toLowerCase()) ||
+      (app.month + app.day + app.year)
+        .toLowerCase()
+        .includes(search.replace(/\s+/g, "").toLowerCase())
+  );
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages = Math.ceil(sortedAppointments?.length / PAGE_SIZE);
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const currentData = mainAppointments?.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  );
+  const startCount = mainAppointments.indexOf(currentData[0]) + 1;
+  const endCount =
+    mainAppointments.indexOf(currentData[currentData.length - 1]) + 1;
+  const data = search ? sortedAppointments : currentData;
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage((c) => c + 1);
+    window.scrollTo({ top: 0 });
+  };
+  const handleSetPage = (value: number) => {
+    if (currentPage !== value) setCurrentPage(value);
+    window.scrollTo({ top: 0 });
+  };
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage((c) => c - 1);
+    window.scrollTo({ top: 0 });
+  };
+
+  return (
+    <>
+      {appointments?.length === 0 ? (
+        <NoResults
+          title="No appointments"
+          text="Your appointment schedule is empty."
+        />
+      ) : (
+        <div className="bg-white rounded-[5px] border-grey-300 border-[1px]">
+          {appointments?.length >= 5 && (
+            <div className="p-[16px] relative">
+              <BsSearch
+                size={18}
+                className="text-grey-100 absolute left-[32px] top-[50%] translate-y-[-50%]"
+              />
+              <Form.Input
+                placeholder="Search"
+                classname="pl-[42px] w-full"
+                onChange={(e) => setSearch(e.target.value)}
+                value={search}
+              />
+            </div>
+          )}
+          {sortedAppointments.length === 0 && appointments.length > 0 ? (
+            <h3 className=" pt-[16px] pb-[32px] text-center text-primary-100 text-[18px]/[24px] font-bold tracking-normal">
+              No results
+            </h3>
+          ) : (
+            <div className="px-4 pb-4">
+              <div className=" overflow-x-auto grid grid-cols-[repeat(1,minmax(0,1fr))] whitespace-normal">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className=" bg-[#f6f7f9]">
+                      {tableHeadings.map((th, index) => (
+                        <th
+                          key={index}
+                          className="px-[16px] h-[60px] text-left "
+                        >
+                          {th}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data?.map((appointment, index) => (
+                      <tr
+                        key={index}
+                        className="border-grey-300 border-b-[1px] last:border-b-0  *:border-grey-300 *:px-[16px] h-[60px]"
+                      >
+                        <td>
+                          {`${appointment.patientData.lastName} ${appointment.patientData.firstName}`}
+                        </td>
+                        <td>{`${appointment.month} ${appointment.day} ${appointment.year}`}</td>
+                        <td>{timeMap[appointment.startTime]}</td>
+                        <td>{timeMap[appointment.endTime]}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {!search && appointments?.length > PAGE_SIZE && (
+                <div className="flex flex-wrap gap-y-4 items-center justify-between border-grey-300 border-t-[1px] pt-[16px]">
+                  <div className="text-grey-100">
+                    {`Showing `}
+                    <span className="text-black-100 font-semibold">
+                      {`${startCount} - ${endCount}`}
+                    </span>
+                    {` of `}
+                    <span className="text-black-100 font-semibold">
+                      {appointments?.length}
+                    </span>
+                  </div>
+                  <ul className="flex items-center h-10 rounded-[5px] overflow-hidden *:h-full border-grey-300 border-[1px] *:border-grey-300 ">
+                    <button
+                      className="px-4 border-r-[1px] bg-[#f6f7f9] text-grey-100"
+                      onClick={handlePrevious}
+                    >
+                      Previous
+                    </button>
+                    {pages?.map((page: number, index) => (
+                      <button
+                        onClick={() => handleSetPage(page)}
+                        key={index}
+                        className={`${
+                          page === currentPage
+                            ? "bg-primary-100 text-white"
+                            : "bg-white text-grey-100 "
+                        } transition-none border-r-[1px] w-10`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    <button
+                      className="px-4 bg-[#f6f7f9] text-grey-100"
+                      onClick={handleNext}
+                    >
+                      Next
+                    </button>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
