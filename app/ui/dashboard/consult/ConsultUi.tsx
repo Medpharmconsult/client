@@ -14,10 +14,10 @@ export default async function ConsultUi() {
         <Row.Column breakPoints="lg:w-[50%]">
           <Card title="Consult professionals" spacing={false}>
             <div className="p-4">
-              <div className="overflow-x-auto grid grid-cols-[repeat(1,minmax(0,1fr))] whitespace-normal ">
-                <table className="w-full border-collapse">
+              <div className="overflow-x-auto grid grid-cols-[repeat(1,minmax(0,1fr))]">
+                <table className="w-full ">
                   <thead>
-                    <tr className="bg-[#f6f7f9]  *:px-[16px] *:h-[60px] *:text-left">
+                    <tr className="bg-[#f6f7f9] *:px-4 *:py-[18px] *:whitespace-nowrap *:text-left">
                       <th>Profession</th>
                       <th></th>
                     </tr>
@@ -25,13 +25,13 @@ export default async function ConsultUi() {
                   <tbody>
                     {professions?.map((prof) => (
                       <tr
-                        className="last:border-b-0 border-grey-300 border-b-[1px]"
+                        className="last:border-b-0 border-grey-300 border-b-[1px] *:px-4 *:whitespace-nowrap"
                         key={prof._id}
                       >
-                        <td className="first-letter:capitalize px-[16px] max-h-[60px] py-[18px]">
+                        <td className="first-letter:capitalize py-[18px]">
                           {prof.name}
                         </td>
-                        <td className="px-[16px]">
+                        <td className="py-[10px]">
                           <Link
                             href={`/dashboard/consult/${prof.code}`}
                             className="rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center text-white font-semibold px-[22px] py-[10px] text-[14px]/[20px] max-w-[98px]"

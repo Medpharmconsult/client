@@ -1,5 +1,4 @@
 "use client";
-
 import Button from "./_components/Button";
 import Container from "./_components/Container";
 import Heading from "./_components/Heading";

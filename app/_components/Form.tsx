@@ -78,7 +78,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <input
         ref={ref}
-        className={`${classname} border-grey-300 rounded-[5px] py-[12px] px-[16px] placeholder:text-[#b1b1b1] border-[1px] placeholder:font-light`}
+        className={`${classname} max-h-12 border-grey-300 rounded-[5px] py-[12px] px-[16px] placeholder:text-[#b1b1b1] border-[1px] placeholder:font-light`}
         {...rest}
       />
     );
@@ -112,7 +112,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
           <BsDash size={24} />
         </button>
         <input
-          className={`${classname} max-w-[48px] h-[48px] text-center border-grey-300 py-[12px]  placeholder:text-[#b1b1b1] border-[1px] placeholder:font-light`}
+          className={`${classname} max-w-12 max-h-12 text-center border-grey-300 py-3  placeholder:text-[#b1b1b1] border-[1px] placeholder:font-light`}
           ref={ref}
           type="number"
           value={value}

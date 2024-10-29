@@ -3,7 +3,7 @@ import Form from "@/app/_components/Form";
 import NoResults from "../../general/NoResults";
 import { timeMap } from "@/app/_lib/utilities";
 import { useState } from "react";
-import { BsSearch } from "react-icons/bs";
+import { BsChevronLeft, BsChevronRight, BsSearch } from "react-icons/bs";
 
 export default function ViewAppointmentsUi({
   appointments,
@@ -75,19 +75,21 @@ export default function ViewAppointmentsUi({
           text="Your appointment schedule is empty."
         />
       ) : (
-        <div className="bg-white rounded-[5px] border-grey-300 border-[1px]">
+        <div className="bg-white rounded-[5px] p-4 border-grey-300 border-[1px] ">
           {appointments?.length >= 5 && (
-            <div className="p-[16px] relative">
-              <BsSearch
-                size={18}
-                className="text-grey-100 absolute left-[32px] top-[50%] translate-y-[-50%]"
-              />
-              <Form.Input
-                placeholder="Search"
-                classname="pl-[42px] w-full"
-                onChange={(e) => setSearch(e.target.value)}
-                value={search}
-              />
+            <div className="pb-4">
+              <div className=" relative">
+                <BsSearch
+                  size={18}
+                  className="text-grey-100 absolute left-4 top-[50%] translate-y-[-50%]"
+                />
+                <Form.Input
+                  placeholder="Search"
+                  classname="pl-[42px] w-full"
+                  onChange={(e) => setSearch(e.target.value)}
+                  value={search}
+                />
+              </div>
             </div>
           )}
           {sortedAppointments.length === 0 && appointments.length > 0 ? (
@@ -95,15 +97,15 @@ export default function ViewAppointmentsUi({
               No results
             </h3>
           ) : (
-            <div className="px-4 pb-4">
-              <div className=" overflow-x-auto grid grid-cols-[repeat(1,minmax(0,1fr))] whitespace-normal">
-                <table className="w-full border-collapse">
+            <div>
+              <div className=" overflow-x-auto grid grid-cols-[repeat(1,minmax(0,1fr))]">
+                <table className="w-full ">
                   <thead>
                     <tr className=" bg-[#f6f7f9]">
                       {tableHeadings.map((th, index) => (
                         <th
                           key={index}
-                          className="px-[16px] h-[60px] text-left "
+                          className="px-4 py-[18px] whitespace-nowrap  text-left "
                         >
                           {th}
                         </th>
@@ -114,7 +116,7 @@ export default function ViewAppointmentsUi({
                     {data?.map((appointment, index) => (
                       <tr
                         key={index}
-                        className="border-grey-300 border-b-[1px] last:border-b-0  *:border-grey-300 *:px-[16px] h-[60px]"
+                        className="border-grey-300 border-b-[1px] *:text-left last:border-b-0  *:border-grey-300 *:whitespace-nowrap *:px-4 *:py-[18px]"
                       >
                         <td>
                           {`${appointment.patientData.lastName} ${appointment.patientData.firstName}`}
@@ -144,7 +146,8 @@ export default function ViewAppointmentsUi({
                       className="px-4 border-r-[1px] bg-[#f6f7f9] text-grey-100"
                       onClick={handlePrevious}
                     >
-                      Previous
+                      <span className="xs:inline-block hidden">Previous</span>
+                      <BsChevronLeft className="xs:hidden" />
                     </button>
                     {pages?.map((page: number, index) => (
                       <button
@@ -163,7 +166,8 @@ export default function ViewAppointmentsUi({
                       className="px-4 bg-[#f6f7f9] text-grey-100"
                       onClick={handleNext}
                     >
-                      Next
+                      <span className="xs:inline-block hidden">Next</span>
+                      <BsChevronRight className="xs:hidden" />
                     </button>
                   </ul>
                 </div>

@@ -28,8 +28,8 @@ export default function Specialities() {
           <Section.Content>
             <ul className="flex-wrap flex items-center justify-center gap-x-[30px] gap-y-[32px] ">
               {specialtiesData.map((specialty, index) => (
-                <li key={index} className="">
-                  <div className="h-[192px] rounded-full w-[192px] relative overflow-hidden">
+                <li key={index}>
+                  <div className="h-[128px] w-[128px] xs:h-[192px] rounded-full xs:w-[192px] relative overflow-hidden">
                     <Image
                       src={specialty.image}
                       fill

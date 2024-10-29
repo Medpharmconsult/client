@@ -43,7 +43,7 @@ export default async function Professional({
           <Row.Column breakPoints="lg:w-7/12 xl:w-8/12">
             <div className="bg-white rounded-[5px] border-[1px] border-grey-300 ">
               <div>
-                <div className=" flex-wrap flex xs:items-center gap-6 px-4 py-6">
+                <div className="flex-wrap flex items-center gap-4 px-4 py-6">
                   <div>
                     <ProfileImg
                       src={`${process.env.NEXT_PUBLIC_Host_Name}${professional?.profileImg}`}

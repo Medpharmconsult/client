@@ -1,9 +1,9 @@
 import Card from "@/app/_components/Card";
 import Row from "@/app/_components/Row";
-import { getUpcomingBookedAppointments } from "@/app/_lib/services";
-import { timeMap } from "@/app/_lib/utilities";
 import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
 import RecentChats from "@/app/ui/dashboard/general/RecentChats";
+import { getUpcomingBookedAppointments } from "@/app/_lib/services";
+import { timeMap } from "@/app/_lib/utilities";
 
 export default async function Page() {
   const upcomingAppointments = await getUpcomingBookedAppointments();
@@ -11,13 +11,13 @@ export default async function Page() {
   return (
     <DashboardScreen title="Dashboard">
       <Row>
-        <Row.Column breakPoints="lg:w-[50%]">
+        <Row.Column breakPoints="lg:w-6/12">
           <Card title="Upcoming appointments" spacing={false}>
             <div className="p-4">
-              <div className="overflow-x-auto grid grid-cols-[repeat(1,minmax(0,1fr))] whitespace-normal ">
-                <table className="w-full border-collapse">
+              <div className="overflow-x-auto grid grid-cols-[repeat(1,minmax(0,1fr))]">
+                <table className="w-full ">
                   <thead>
-                    <tr className="bg-[#f6f7f9]  *:px-[16px] *:h-[60px] *:text-left">
+                    <tr className="bg-[#f6f7f9] *:px-4 *:py-[18px] *:whitespace-nowrap *:text-left">
                       <th>Patient name</th>
                       <th>Date</th>
                       <th>Start time</th>
@@ -27,7 +27,7 @@ export default async function Page() {
                     {upcomingAppointments?.map((app, index) => (
                       <tr
                         key={index}
-                        className="border-grey-300 border-b-[1px] last:border-b-0 *:border-grey-300 *:px-[16px] h-[60px]"
+                        className="border-grey-300 border-b-[1px] last:border-b-0 *:border-grey-300 *:px-4 *:py-[18px] *:whitespace-nowrap"
                       >
                         <td>
                           {`${app.patientData.lastName} ${app.patientData.firstName}`}

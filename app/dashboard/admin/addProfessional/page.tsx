@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { apiFetcher } from "@/app/_lib/utilities";
 import Button from "@/app/_components/Button";
+import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
 
 interface ApiResponse {
   statusCode: number;
@@ -77,80 +78,94 @@ export default function AddProfessional() {
   };
 
   return (
-    <div>
-      <form>
-        <div>
+    <DashboardScreen title="Add professional">
+      <div>
+        <form>
           <div>
-            <label htmlFor="">First name</label>
-            <input ref={firstNameInput} type="text" placeholder="First name" />
+            <div>
+              <label htmlFor="">First name</label>
+              <input
+                ref={firstNameInput}
+                type="text"
+                placeholder="First name"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="">Last name</label>
+              <input ref={lastNameInput} type="text" placeholder="Last name" />
+            </div>
+          </div>
+          <div>
+            <div>
+              <label htmlFor="">Username name</label>
+              <input ref={usernameInput} type="text" placeholder="Username" />
+            </div>
+
+            <div>
+              <label htmlFor="">Profession</label>
+              <select ref={professionInput}>
+                {isLoading ? (
+                  <option>LOADING...</option>
+                ) : (
+                  apiData.responseData.map((profession) => (
+                    <option key={profession._id}>{profession.name}</option>
+                  ))
+                )}
+              </select>
+            </div>
           </div>
 
           <div>
-            <label htmlFor="">Last name</label>
-            <input ref={lastNameInput} type="text" placeholder="Last name" />
+            <div>
+              <label htmlFor="">Gender</label>
+              <select ref={genderInput}>
+                <option value="m">m</option>
+                <option value="f">f</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="">Years of experience</label>
+              <input
+                ref={yoeInput}
+                type="number"
+                placeholder="Years of experience"
+              />
+            </div>
           </div>
-        </div>
-        <div>
           <div>
-            <label htmlFor="">Username name</label>
-            <input ref={usernameInput} type="text" placeholder="Username" />
-          </div>
+            <div>
+              <label htmlFor="">Phone number</label>
+              <input
+                ref={phoneNoInput}
+                type="text"
+                placeholder="Phone Number"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="">Profession</label>
-            <select ref={professionInput}>
-              {isLoading ? (
-                <option>LOADING...</option>
-              ) : (
-                apiData.responseData.map((profession) => (
-                  <option key={profession._id}>{profession.name}</option>
-                ))
-              )}
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <label htmlFor="">Gender</label>
-            <select ref={genderInput}>
-              <option value="m">m</option>
-              <option value="f">f</option>
-            </select>
+            <div>
+              <label htmlFor="">Email</label>
+              <input ref={emailInput} type="email" placeholder="Email" />
+            </div>
           </div>
           <div>
-            <label htmlFor="">Years of experience</label>
-            <input
-              ref={yoeInput}
-              type="number"
-              placeholder="Years of experience"
-            />
+            <div>
+              <label htmlFor="">Password</label>
+              <input ref={passwordInput} type="text" placeholder="Password" />
+            </div>
           </div>
-        </div>
-        <div>
           <div>
-            <label htmlFor="">Phone number</label>
-            <input ref={phoneNoInput} type="text" placeholder="Phone Number" />
+            <Button
+              onClick={(e) => profSignup(e)}
+              classname=""
+              colour="primary"
+            >
+              Add staff
+            </Button>
           </div>
-
-          <div>
-            <label htmlFor="">Email</label>
-            <input ref={emailInput} type="email" placeholder="Email" />
-          </div>
-        </div>
-        <div>
-          <div>
-            <label htmlFor="">Password</label>
-            <input ref={passwordInput} type="text" placeholder="Password" />
-          </div>
-        </div>
-        <div>
-          <Button onClick={(e) => profSignup(e)} classname="" colour="primary">
-            Add staff
-          </Button>
-        </div>
-        <p>{errMsg}</p>
-      </form>
-    </div>
+          <p>{errMsg}</p>
+        </form>
+      </div>
+    </DashboardScreen>
   );
 }

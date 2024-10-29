@@ -6,8 +6,11 @@ import { FaCog } from "react-icons/fa";
 import {
   FaCalendarCheck,
   FaCalendarDays,
+  FaHospitalUser,
   FaMoneyBill,
   FaPalette,
+  FaUserDoctor,
+  FaUserPlus,
   FaUsers,
 } from "react-icons/fa6";
 import DashboardLogo from "./DashboardLogo";
@@ -66,12 +69,17 @@ const adminMenu = [
   {
     name: "Dashboard",
     link: "/dashboard/admin",
-    icon: <></>,
+    icon: <FaPalette />,
   },
   {
     name: "Add profession",
-    link: "/dashboard/addProfession",
-    icon: <></>,
+    link: "/dashboard/admin/addProfession",
+    icon: <FaHospitalUser />,
+  },
+  {
+    name: "Add professional",
+    link: "/dashboard/admin/addProfessional",
+    icon: <FaUserPlus />,
   },
 ];
 export default function DashboardMenu({ userRole }: { userRole?: string }) {
