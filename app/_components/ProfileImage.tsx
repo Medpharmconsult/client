@@ -15,11 +15,11 @@ export default function ProfileImg({
 }) {
   return (
     <>
-      {hasImg && src ? (
+      {hasImg ? (
         <RoundImage size={size} src={src} alt={alt} />
       ) : (
         <div
-          className="rounded-full overflow-hidden flex items-center justify-center bg-pink-600"
+          className={`rounded-full overflow-hidden flex items-center justify-center bg-pink-600`}
           style={{
             width: `${size}px`,
             height: `${size}px`,

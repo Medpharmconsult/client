@@ -14,7 +14,6 @@ interface InputNumberProps extends InputProps {
   minVal?: number;
   maxVal: number;
   defaultVal: number;
-  join?: boolean;
   children?: React.ReactElement;
 }
 
@@ -26,13 +25,12 @@ interface TextareaProps
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   classname?: string;
   children: React.ReactNode;
-  join?: boolean;
 }
 
 function Form({ children, classname = "", ...rest }: FormProps) {
   return (
     <form
-      className={` flex flex-col
+      className={`flex flex-col
        gap-y-[18px] ${classname}`}
       {...rest}
     >
@@ -47,13 +45,13 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <div className={`relative ${classname}`}>
         <select
           ref={ref}
-          className={`w-full cursor-pointer bg-white border-grey-300 rounded-[5px] h-[48px]  py-[12px] pl-[16px] pr-[40px] border-[1px]`}
+          className={`w-full cursor-pointer bg-white border-grey-300 rounded-5 h-12 py-3 pl-4 pr-10 border-1`}
           {...rest}
         >
           {children}
         </select>
         <BsChevronDown
-          className="top-[16px] right-[16px] pointer-events-none absolute w-[16px] h-[16px] text-grey-100"
+          className="top-4 right-4 pointer-events-none absolute w-4 h-4 text-grey-100"
           size={16}
         />
       </div>
@@ -66,7 +64,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <textarea
         ref={ref}
-        className={`${classname} border-[1px] w-full border-grey-300 rounded-[5px] py-[12px] px-[16px] placeholder:text-[#b1b1b1] min-h-[192px] placeholder:font-light`}
+        className={`${classname} border-1 w-full border-grey-300 rounded-5 py-3 px-4 placeholder:text-grey-600 min-h-48 placeholder:font-light`}
         {...props}
       />
     );
@@ -78,7 +76,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <input
         ref={ref}
-        className={`${classname} max-h-12 border-grey-300 rounded-[5px] py-[12px] px-[16px] placeholder:text-[#b1b1b1] border-[1px] placeholder:font-light`}
+        className={`${classname} h-12 border-grey-300 rounded-5 py-3 px-4 placeholder:text-grey-600 border-1 placeholder:font-light`}
         {...rest}
       />
     );
@@ -105,25 +103,25 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
     return (
       <div className="flex items-center">
         <button
-          className="bg-[#f6f7f9] text-grey-100 py-[12px]  w-[40px] inline-flex border-l-[1px] border-y-[1px] h-[48px] items-center justify-center border-grey-300  rounded-tl-[5px] rounded-bl-[5px]"
+          className="bg-grey-700 text-grey-100 py-3 w-10 inline-flex border-l-1 border-y-1 h-12 items-center justify-center border-grey-300  rounded-tl-5 rounded-bl-5"
           onClick={handleDecrease}
           type="button"
         >
           <BsDash size={24} />
         </button>
         <input
-          className={`${classname} max-w-12 max-h-12 text-center border-grey-300 py-3  placeholder:text-[#b1b1b1] border-[1px] placeholder:font-light`}
+          className={`${classname} max-w-12 max-h-12 text-center border-grey-300 py-3 placeholder:text-grey-600 border-1 placeholder:font-light`}
           ref={ref}
           type="number"
           value={value}
-          {...rest}
           onChange={(e) => handleChange(Number(e.target.value))}
+          {...rest}
         />
         {children}
         <button
           onClick={handleIncrease}
           type="button"
-          className={`bg-[#f6f7f9] text-[14px]/[20px] py-[12px] text-grey-100 w-[40px] inline-flex  border-y-[1px] h-[48px] items-center justify-center border-grey-300 rounded-r-[5px] border-r-[1px] rounded-l-none`}
+          className={`bg-grey-700 text-sm py-3 text-grey-100 w-10 inline-flex  border-y-1 h-12 items-center justify-center border-grey-300 rounded-r-5 border-r-1 rounded-l-none`}
         >
           <BsPlus size={24} />
         </button>

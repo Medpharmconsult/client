@@ -8,6 +8,8 @@ import { BsSearch } from "react-icons/bs";
 
 interface contactListProps {
   text: string;
+  userID: string;
+  sender: string;
   contactInfo: {
     primaryID: string;
     firstName: string;
@@ -41,7 +43,7 @@ export default function ContactsUi({
       setContactList((prevMsgs) => {
         const filteredList = prevMsgs.filter(
           (contact) =>
-            contact.contactInfo.primaryID != data.contactInfo.primaryID
+            contact.contactInfo.primaryID !== data.contactInfo.primaryID
         );
         return [data, ...filteredList];
       });
@@ -57,12 +59,12 @@ export default function ContactsUi({
       {contactList?.length === 0 ? (
         <NoResults title="No contacts" text="Your contact list is empty." />
       ) : (
-        <div className="bg-white rounded-[5px] border-grey-300 border-[1px] py-[16px] px-0 xs:px-[16px]">
+        <div className="bg-white rounded-5 border-grey-300 border-1 py-4 px-0 xs:px-4">
           {contactList.length >= 5 && (
-            <div className="mb-[16px] relative px-[16px] xs:px-0">
+            <div className="mb-4 relative px-4 xs:px-0">
               <BsSearch
                 size={18}
-                className="text-grey-100 absolute left-[32px] xs:left-[16px] top-[50%] translate-y-[-50%]"
+                className="text-grey-100 absolute left-8 xs:left-4 top-1/2 translate-y-[-50%]"
               />
 
               <Form.Input
@@ -74,7 +76,7 @@ export default function ContactsUi({
             </div>
           )}
           {searchedList.length === 0 && contactList.length > 0 ? (
-            <h3 className=" py-[16px] text-center text-primary-100 text-[18px]/[24px] font-bold tracking-normal">
+            <h3 className=" py-4 text-center text-primary-100 text-[18px]/[24px] font-bold tracking-normal">
               No results
             </h3>
           ) : (

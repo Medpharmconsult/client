@@ -64,7 +64,7 @@ export default function MessagesUi({
 
   return (
     <div>
-      <div className="flex flex-col items-center gap-y-[12px]">
+      <div className="flex flex-col items-center gap-y-3">
         <ProfileImg
           src={`${process.env.NEXT_PUBLIC_Host_Name}${contact?.profileImg}`}
           hasImg={contact?.profileImg ? true : false}
@@ -76,17 +76,17 @@ export default function MessagesUi({
             </h1>
           }
         />
-        <h1 className="font-medium tracking-none">
+        <h1 className="font-medium capitalize tracking-none">
           {contact?.lastName} {contact?.firstName}
         </h1>
       </div>
       <div>
         {messages.length === 0 ? (
-          <p className="text-grey-100 text-center mt-[8px] text-[15px]">
+          <p className="text-grey-100 text-center mt-2 text-[15px]">
             Send a message to start the conversation.
           </p>
         ) : (
-          <ul className="gap-y-[12px] flex flex-col  mt-[24px] xs:mt-[32px]">
+          <ul className="gap-y-[12px] flex flex-col  mt-6 xs:mt-8">
             {messages.map((message, index) =>
               message.sender == userID ? (
                 <Message text={message.text} key={index} />
@@ -98,7 +98,7 @@ export default function MessagesUi({
           </ul>
         )}
         <div
-          className={`flex  border-grey-300 border-[1px]  h-[48px] fixed w-full bottom-0 right-0  ${
+          className={`flex  border-grey-300 border-1  h-12 fixed w-full bottom-0 right-0  ${
             nav
               ? "md:left-[237px] md:w-[calc(100%-237px)]"
               : "md:left-[79px] md:w-[calc(100%-84px)]"
@@ -106,12 +106,12 @@ export default function MessagesUi({
         >
           <textarea
             ref={text}
-            className="h-full flex-1 focus:outline-none placeholder:font-light px-[16px] max-h-[48px]  rounded-none text-[16px]/[24px] flex items-center  pt-[12px]"
+            className="h-full flex-1 focus:outline-none placeholder:font-light px-4 max-h-12  rounded-none text-base flex items-center  pt-3"
             placeholder="Type a message"
           ></textarea>
           <button
             onClick={messageHandler}
-            className="bg-primary-100 hover:bg-primary-200 text-white font-semibold capitalize px-[24px] h-[48px]"
+            className="bg-primary-100 hover:bg-primary-200 text-white font-semibold capitalize px-6 h-12"
           >
             send
           </button>
@@ -130,7 +130,7 @@ function Message({ text, isLeft = false }: { text: string; isLeft?: boolean }) {
         }  mb-[5px]`}
       ></div>
       <span
-        className={`shadow-sm first-letter:capitalize p-[8px] px-[12px] rounded-[5px] ${
+        className={`shadow-sm first-letter:capitalize p-2 px-3 rounded-5 ${
           isLeft
             ? "bg-white text-black-100"
             : "bg-secondary-100 text-primary-100"

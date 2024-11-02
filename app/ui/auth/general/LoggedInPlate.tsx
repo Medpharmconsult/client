@@ -25,7 +25,7 @@ export default function LoggedInPlate({ session }: { session: SessionData }) {
   return (
     <MobileMenu>
       <MobileMenuButton>
-        <div className="flex items-center justify-center cursor-pointer gap-[16px] *:pointer-events-none">
+        <div className="flex items-center justify-center cursor-pointer gap-4 *:pointer-events-none">
           <ProfileImg
             hasImg={session.profileImg ? true : false}
             src={`${process.env.NEXT_PUBLIC_Host_Name}${session.profileImg}`}
@@ -37,7 +37,7 @@ export default function LoggedInPlate({ session }: { session: SessionData }) {
               </h1>
             }
           />
-          <div className="hidden md:flex items-center justify-center gap-[16px]">
+          <div className="hidden md:flex items-center justify-center gap-4">
             <div className="flex flex-col items-start gap-[2px]">
               <span className="font-medium text-sm capitalize">{`${session.lastName} ${session.firstName}`}</span>
               <span className="uppercase text-[11px] font-medium text-grey-100">
@@ -67,7 +67,7 @@ export default function LoggedInPlate({ session }: { session: SessionData }) {
                   : session.role === "professional"
                   ? "/dashboard/staff"
                   : session.role === "admin"
-                  ? "/dashboard/admin"
+                  ? "/dashboard/admin/addProfessional"
                   : ""
               }`}
             >

@@ -13,7 +13,9 @@ export async function middleware(req: NextRequest) {
       case "professional":
         return NextResponse.redirect(new URL("/dashboard/staff", req.url));
       case "admin":
-        return NextResponse.redirect(new URL("/dashboard/admin", req.url));
+        return NextResponse.redirect(
+          new URL("/dashboard/admin/addProfessional", req.url)
+        );
       default:
         return NextResponse.next();
     }

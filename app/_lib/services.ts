@@ -21,25 +21,30 @@ interface FetchContactsListResponse {
   statusCode: number;
   responseData: {
     msg: string;
-    contacts: [
-      {
-        text: string;
-        contactInfo: {
-          primaryID: string;
-          firstName: string;
-          lastName: string;
-          profileImg?: string;
-          email: string;
-        };
-      }
-    ];
+    contacts: {
+      userID: string;
+      text: string;
+      sender: string;
+      contactInfo: {
+        primaryID: string;
+        firstName: string;
+        lastName: string;
+        profileImg?: string;
+        email: string;
+      };
+    }[];
   };
 }
 
 interface GetProfessionsResponse {
   statusCode: number;
   msg: string;
-  responseData: Array<{ _id: string; name: string; code: string }>;
+  responseData: Array<{
+    _id: string;
+    name: string;
+    code: string;
+    collection: string;
+  }>;
 }
 
 interface GetMessagesResponse {
@@ -136,11 +141,18 @@ interface GetBookedAppointmentsResponse {
 }
 
 export const fetchUser = async function (token: string) {
+  const user: {
+    role?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    profileImg?: string;
+    token?: string;
+  } = {};
   const decodedToken = jwtDecode(`${token}`) as {
     userID: string;
     role: string;
   };
-
   const res = (await apiFetcher(
     `${process.env.NEXT_PUBLIC_Host_Name}/get-user?userID=${decodedToken.userID}`,
     {
@@ -148,18 +160,15 @@ export const fetchUser = async function (token: string) {
     }
   )) as FetchUserResponse;
   if (res.statusCode === 200) {
-    const user = res.responseData.userData;
-    return {
-      role: decodedToken.role,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      profileImg: user?.profileImg ? user.profileImg : "",
-      token: token,
-    };
-  } else {
-    return {};
+    const data = res.responseData.userData;
+    user.role = decodedToken.role;
+    user.firstName = data.firstName;
+    user.lastName = data.lastName;
+    user.email = data.email;
+    user.profileImg = data?.profileImg ?? "";
+    user.token = token;
   }
+  return user;
 };
 
 export const getProfessions = async () => {
@@ -170,8 +179,16 @@ export const getProfessions = async () => {
   return res;
 };
 
+export const getProfession = async (profCode: string) => {
+  const res = await getProfessions();
+  return res?.responseData
+    .filter((profession) => profession.code === profCode)
+    .at(0);
+};
+
 export const getContactsList = async () => {
   const token = await getToken();
+  const { userID } = jwtDecode(`${token}`) as { userID: string };
   const res = (await apiFetcher(
     `${process.env.NEXT_PUBLIC_Host_Name}/get-contacts`,
     {
@@ -181,6 +198,12 @@ export const getContactsList = async () => {
       },
     }
   )) as FetchContactsListResponse;
+  if (res.statusCode === 200) {
+    const contacts = res.responseData?.contacts?.map((contact) => {
+      return { ...contact, userID };
+    });
+    res.responseData.contacts = contacts;
+  }
   return res;
 };
 
@@ -222,7 +245,7 @@ export const getMessages = async () => {
   return res;
 };
 
-export const getAppointments = async (
+export const getAppointmentDays = async (
   profID: string,
   month: string,
   year: string
@@ -237,7 +260,7 @@ export const getAppointments = async (
 export const getMonthAppointments = async (profID: string, date: Date) => {
   const month = formatDate(date, { month: "long" });
   const year = String(date.getFullYear());
-  const res = await getAppointments(profID, month, year);
+  const res = await getAppointmentDays(profID, month, year);
   const appointments = res?.responseData.appointmentDays;
   return appointments?.map((app) => `${app.month} ${app.day}`);
 };

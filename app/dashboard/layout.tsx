@@ -3,7 +3,10 @@ import { getSession } from "../_lib/services";
 import { DashboardContextProvider } from "@/context/DashboardContext";
 
 export const metadata = {
-  title: "Dashboard",
+  title: {
+    template: "Dashboard - %s",
+    default: "Dashboard",
+  },
 };
 
 export default async function DashboardLayout({

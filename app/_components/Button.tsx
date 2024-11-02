@@ -9,11 +9,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const btnType = {
-  primary: "bg-primary-100 text-white  hover:bg-primary-200  ",
+  primary: "bg-primary-100 text-white hover:bg-primary-200",
   "outline-primary":
-    "bg-transparent text-primary-100 border-solid border-2 hover:text-white border-primary-100 hover:bg-primary-100",
+    "bg-transparent text-primary-100  border-2 hover:text-white border-primary-100 hover:bg-primary-100",
   "outline-white":
-    "outline-white border-[2px] text-white hover:bg-white hover:text-primary-100",
+    "outline-white border-2 text-white hover:bg-white hover:text-primary-100",
 };
 
 export default function Button({
@@ -24,7 +24,7 @@ export default function Button({
   href = "",
   ...rest
 }: ButtonProps) {
-  const className = `px-[24px] py-[16px] rounded-full font-semibold max-h-[56px] flex items-center justify-center ${classname} ${btnType[colour]} min-h-[56px]`;
+  const className = `px-6 py-4 rounded-full font-semibold h-14 flex items-center justify-center ${classname} ${btnType[colour]} `;
   if (!isLink && !href)
     return (
       <button {...rest} className={className}>
@@ -33,7 +33,7 @@ export default function Button({
     );
   else
     return (
-      <Link href={href} className={`${className} inline-block`}>
+      <Link href={href} className={className}>
         {children}
       </Link>
     );

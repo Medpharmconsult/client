@@ -5,8 +5,8 @@ export const apiFetcher = async (url: string, options: object) => {
       const res = await data.json();
       return res;
     }
-  } catch (err: any) {
-    console.error("Failed to fetch", err.message);
+  } catch (err: unknown) {
+    if (err instanceof Error) console.error("Failed to fetch", err.message);
   }
 };
 
@@ -21,13 +21,9 @@ export const getNextMonth = () => {
   date.setMonth(month + 1);
   return date;
 };
-export const getCurrentYear = () => {
-  const date = new Date();
-  const year = date.getFullYear();
-  return year;
-};
 
 export const getMonthDays = (date: Date) => {
+  date.setDate(1);
   const newDate = new Date(date);
   newDate.setMonth(newDate.getMonth() + 1);
   newDate.setDate(0);
@@ -86,3 +82,7 @@ export const timeMap = [
   "10PM",
   "11PM",
 ];
+
+export const capitalizeFirstLetter = (message: string) => {
+  return message.charAt(0).toUpperCase() + message.slice(1);
+};

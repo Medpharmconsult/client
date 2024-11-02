@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function DashboardLogo({ isNavOpen }: { isNavOpen: boolean }) {
   return (
-    <Link href="/" className="flex gap-x-[12px]">
+    <Link href="/" className="flex gap-x-3">
       <div>
         <svg
           width="49"

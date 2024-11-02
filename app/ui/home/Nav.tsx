@@ -7,8 +7,8 @@ import { getSession } from "@/app/_lib/services";
 export default async function Nav() {
   const session = await getSession();
   return (
-    <nav className="max-h-[96px]">
-      <Container classname="flex justify-between items-center relative py-[20px]">
+    <nav className="max-h-24">
+      <Container classname="flex justify-between items-center relative py-5">
         <Logo />
         {!session.isLoggedIn ? (
           <LoginPlate />

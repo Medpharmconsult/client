@@ -69,7 +69,7 @@ function MobileMenuList({ children }: { children: React.ReactNode }) {
       {isVisible && (
         <ul
           ref={listRef}
-          className="absolute right-0 top-[100%]  bg-primary-100 text-white z-10  min-w-[150px] shadow-lg "
+          className="absolute right-0 top-full  bg-primary-100 text-white z-10  min-w-[150px] shadow-lg "
         >
           {children}
         </ul>
@@ -81,10 +81,10 @@ function MobileMenuList({ children }: { children: React.ReactNode }) {
 function MobileMenuItem({ children }: { children: React.ReactElement }) {
   const ListLink = cloneElement(children, {
     className:
-      "py-[12px] w-full px-[15px] inline-block text-left hover:bg-primary-200 transition-none flex items-center gap-[12px]",
+      "py-3 w-full px-[15px] inline-block text-left hover:bg-primary-200 transition-none flex items-center gap-3",
   });
   return (
-    <li className="flex items-center text-sm border-b-[1px] border-b-[#3964C0] last:border-b-0">
+    <li className="flex items-center text-sm border-b-1 border-b-secondary-200 last:border-b-0">
       {ListLink}
     </li>
   );

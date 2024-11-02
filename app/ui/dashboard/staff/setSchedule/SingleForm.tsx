@@ -69,9 +69,7 @@ export default function SingleForm() {
             </div>
           </Form.Group>
         </div>
-        <div className="mt-[6px]">
-          <SetScheduleButton />
-        </div>
+        <SetScheduleButton />
       </Form>
     </div>
   );

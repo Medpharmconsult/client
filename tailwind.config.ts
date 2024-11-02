@@ -9,6 +9,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      borderWidth: {
+        1: "1px",
+      },
+      borderRadius: {
+        5: "5px",
+      },
       colors: {
         primary: {
           100: "#1341A3",
@@ -27,6 +33,8 @@ const config: Config = {
           300: "#E3E3E3",
           400: "#929292",
           500: "#f4f4f4",
+          600: "#b1b1b1",
+          700: "#f6f7f9",
         },
         error: {
           bg: "#FEF2F2",

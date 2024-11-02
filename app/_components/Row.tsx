@@ -20,14 +20,12 @@ function Row({
 
 function Column({
   children,
-  breakPoints,
+  breakPoints = "",
 }: {
   children: React.ReactNode;
   breakPoints?: string;
 }) {
-  return (
-    <div className={`w-full ${breakPoints ? breakPoints : ""}`}>{children}</div>
-  );
+  return <div className={`w-full ${breakPoints}`}>{children}</div>;
 }
 
 Row.Column = Column;

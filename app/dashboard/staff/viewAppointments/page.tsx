@@ -1,7 +1,9 @@
 import { getBookedAppointments } from "@/app/_lib/services";
 import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
 import ViewAppointmentsUi from "@/app/ui/dashboard/staff/viewAppointments/ViewAppointmentsUi";
-
+export const metadata = {
+  title: "View Appointments",
+};
 export default async function ViewAppointments() {
   const res = await getBookedAppointments();
   const bookedAppointments = res?.responseData.bookedAppintments;

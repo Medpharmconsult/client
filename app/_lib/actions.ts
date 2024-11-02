@@ -44,6 +44,19 @@ export interface SetScheduleRangeProps {
   endMeridian?: string;
 }
 
+export interface AddProfessionalProps {
+  firstName: string;
+  lastName: string;
+  username: string;
+  profession: string;
+  gender: string;
+  yoe: number;
+  phoneNo: string;
+  email: string;
+  password: string;
+  profCode: string;
+}
+
 export async function signOut() {
   const session = await getSession();
   session.destroy();
@@ -71,9 +84,9 @@ export async function setScheduleRange(data: SetScheduleRangeProps) {
   else return false;
 }
 
-export async function signIn(signInData: SignInProps, userRole: string) {
+export async function signIn(signInData: SignInProps, role: string) {
   const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/${userRole}-login`,
+    `${process.env.NEXT_PUBLIC_Host_Name}/${role}-login`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -97,13 +110,13 @@ export async function signIn(signInData: SignInProps, userRole: string) {
     return res.responseData.msg;
   }
 
-  switch (userRole) {
+  switch (role) {
     case "patient":
       redirect("/dashboard/consult");
     case "professional":
       redirect("/dashboard/staff");
     case "admin":
-      redirect("/dashboard/admin");
+      redirect("/dashboard/admin/addProfessional");
     default:
   }
 }
@@ -125,8 +138,8 @@ export async function sendMail(data: MailData) {
     });
     if (res.ok) return true;
     else return false;
-  } catch (err) {
-    console.log(err);
+  } catch (err: unknown) {
+    if (err instanceof Error) console.error(err.message);
   }
 }
 
@@ -188,4 +201,22 @@ export async function signUp(signUpData: signUpProps) {
     return res.msg;
   }
   redirect("/dashboard/consult");
+}
+
+export async function addProfessional(data: AddProfessionalProps) {
+  const res = (await apiFetcher(
+    `${process.env.NEXT_PUBLIC_Host_Name}/professional-signup`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }
+  )) as {
+    statusCode: number;
+    msg: string;
+    responseData: Array<{ _id: string; name: string; code: string }>;
+  };
+  if (res.statusCode === 200)
+    return { status: true, msg: "Professional added successfully" };
+  else return { status: false, msg: res.msg };
 }

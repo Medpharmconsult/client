@@ -14,27 +14,27 @@ export default function DashboardScreen({
 }) {
   return (
     <Container
-      classname={`flex-1 xs:pt-[144px] pt-[128px] w-full ${
-        hasSpaceBelow ? "xs:pb-[64px] pb-[48px]" : ""
+      classname={`flex-1 xs:pt-36 pt-32 w-full ${
+        hasSpaceBelow ? "xs:pb-16 pb-12" : ""
       } `}
     >
-      <Heading
-        type="h4"
-        classname={` ${title ? "xs:mb-[32px] mb-[24px]  " : ""} ${
-          subtitle ? "flex items-end" : ""
-        }`}
-      >
-        <span className="inline-block first-letter:capitalize"> {title}</span>
+      {title && (
+        <Heading
+          type="h4"
+          classname={`xs:mb-8 mb-6 ${subtitle ? "flex items-end" : ""}`}
+        >
+          <span className="inline-block first-letter:capitalize"> {title}</span>
+          {subtitle && (
+            <div className="text-grey-100 text-[16px]/[28px] lg:text-[18px]/[32px] inline-block">
+              <span className="px-2">/</span>
+              <span className="inline-block first-letter:capitalize ">
+                {subtitle}
+              </span>
+            </div>
+          )}
+        </Heading>
+      )}
 
-        {subtitle && (
-          <div className="text-grey-100 text-[16px]/[28px] lg:text-[18px]/[32px] inline-block">
-            <span className="px-[8px]">/</span>
-            <span className="inline-block first-letter:capitalize ">
-              {subtitle}
-            </span>
-          </div>
-        )}
-      </Heading>
       {children}
     </Container>
   );

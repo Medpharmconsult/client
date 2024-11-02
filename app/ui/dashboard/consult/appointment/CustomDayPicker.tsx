@@ -21,7 +21,7 @@ export default function CustomDayPicker({
       classNames={{
         month_grid: `w-full *:w-full `,
         weekday: `text-grey-100 pb-[10px] text-[14px]/[20px]`,
-        day_button: `rounded-[300px] py-[4px] w-full max-w-[32px] hover:bg-[#f6f7f9] disabled:hover:bg-transparent disabled:opacity-35`,
+        day_button: `rounded-[300px] py-1 w-full max-w-[32px] hover:bg-[#f6f7f9] disabled:hover:bg-transparent disabled:opacity-35`,
         day: `text-center py-[6px]  `,
         today: ` *:text-primary-100 font-medium`,
       }}

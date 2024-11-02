@@ -26,10 +26,10 @@ export default function Specialities() {
             </Heading>
           </div>
           <Section.Content>
-            <ul className="flex-wrap flex items-center justify-center gap-x-[30px] gap-y-[32px] ">
+            <ul className="flex-wrap flex items-center justify-center gap-x-[30px] gap-y-8 ">
               {specialtiesData.map((specialty, index) => (
                 <li key={index}>
-                  <div className="h-[128px] w-[128px] xs:h-[192px] rounded-full xs:w-[192px] relative overflow-hidden">
+                  <div className="h-32 w-32 xs:h-48 rounded-full xs:w-48 relative overflow-hidden">
                     <Image
                       src={specialty.image}
                       fill
@@ -45,7 +45,7 @@ export default function Specialities() {
               ))}
             </ul>
           </Section.Content>
-          <p className="mt-[32px] max-w-[618px] w-full mx-auto">
+          <p className="mt-8 max-w-[618px] w-full mx-auto">
             With 80+ specialties covered, get medical advice and medical second
             opinion to any of your health concerns under one roof.
           </p>

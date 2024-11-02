@@ -1,7 +1,9 @@
 import ContactsUi from "@/app/ui/dashboard/contacts/ContactsUi";
 import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
 import { getContactsList, getToken } from "@/app/_lib/services";
-
+export const metadata = {
+  title: "Contacts",
+};
 export default async function Contacts() {
   const token = await getToken();
   const res = await getContactsList();

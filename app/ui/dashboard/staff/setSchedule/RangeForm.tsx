@@ -1,7 +1,5 @@
 "use client";
-import Button from "@/app/_components/Button";
 import Form from "@/app/_components/Form";
-import SpinnerMini from "@/app/_components/SpinnerMini";
 import { setScheduleRange } from "@/app/_lib/actions";
 import {
   formatDate,
@@ -96,9 +94,7 @@ export default function RangeForm() {
             </div>
           </Form.Group>
         </div>
-        <div className="mt-[6px]">
-          <SetScheduleButton isLoading={isPending} />
-        </div>
+        <SetScheduleButton isLoading={isPending} />
       </Form>
     </div>
   );

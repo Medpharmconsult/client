@@ -75,13 +75,13 @@ export default function ViewAppointmentsUi({
           text="Your appointment schedule is empty."
         />
       ) : (
-        <div className="bg-white rounded-[5px] p-4 border-grey-300 border-[1px] ">
+        <div className="bg-white rounded-[5px] p-4 border-grey-300 border-1 ">
           {appointments?.length >= 5 && (
             <div className="pb-4">
               <div className=" relative">
                 <BsSearch
                   size={18}
-                  className="text-grey-100 absolute left-4 top-[50%] translate-y-[-50%]"
+                  className="text-grey-100 absolute left-4 top-1/2 translate-y-[-50%]"
                 />
                 <Form.Input
                   placeholder="Search"
@@ -93,7 +93,7 @@ export default function ViewAppointmentsUi({
             </div>
           )}
           {sortedAppointments.length === 0 && appointments.length > 0 ? (
-            <h3 className=" pt-[16px] pb-[32px] text-center text-primary-100 text-[18px]/[24px] font-bold tracking-normal">
+            <h3 className=" pt-4 pb-8 text-center text-primary-100 text-[18px]/[24px] font-bold tracking-normal">
               No results
             </h3>
           ) : (
@@ -101,7 +101,7 @@ export default function ViewAppointmentsUi({
               <div className=" overflow-x-auto grid grid-cols-[repeat(1,minmax(0,1fr))]">
                 <table className="w-full ">
                   <thead>
-                    <tr className=" bg-[#f6f7f9]">
+                    <tr className=" bg-grey-700">
                       {tableHeadings.map((th, index) => (
                         <th
                           key={index}
@@ -116,7 +116,7 @@ export default function ViewAppointmentsUi({
                     {data?.map((appointment, index) => (
                       <tr
                         key={index}
-                        className="border-grey-300 border-b-[1px] *:text-left last:border-b-0  *:border-grey-300 *:whitespace-nowrap *:px-4 *:py-[18px]"
+                        className="border-grey-300 border-b-1 *:text-left last:border-b-0  *:border-grey-300 *:whitespace-nowrap *:px-4 *:py-[18px]"
                       >
                         <td>
                           {`${appointment.patientData.lastName} ${appointment.patientData.firstName}`}
@@ -130,7 +130,7 @@ export default function ViewAppointmentsUi({
                 </table>
               </div>
               {!search && appointments?.length > PAGE_SIZE && (
-                <div className="flex flex-wrap gap-y-4 items-center justify-between border-grey-300 border-t-[1px] pt-[16px]">
+                <div className="flex flex-wrap gap-y-4 items-center justify-between border-grey-300 border-t-1 pt-4">
                   <div className="text-grey-100">
                     {`Showing `}
                     <span className="text-black-100 font-semibold">
@@ -141,9 +141,9 @@ export default function ViewAppointmentsUi({
                       {appointments?.length}
                     </span>
                   </div>
-                  <ul className="flex items-center h-10 rounded-[5px] overflow-hidden *:h-full border-grey-300 border-[1px] *:border-grey-300 ">
+                  <ul className="flex items-center h-10 rounded-5 overflow-hidden *:h-full border-grey-300 border-1 *:border-grey-300 ">
                     <button
-                      className="px-4 border-r-[1px] bg-[#f6f7f9] text-grey-100"
+                      className="px-4 border-r-1 bg-grey-700 text-grey-100"
                       onClick={handlePrevious}
                     >
                       <span className="xs:inline-block hidden">Previous</span>
@@ -157,13 +157,13 @@ export default function ViewAppointmentsUi({
                           page === currentPage
                             ? "bg-primary-100 text-white"
                             : "bg-white text-grey-100 "
-                        } transition-none border-r-[1px] w-10`}
+                        } transition-none border-r-1 w-10`}
                       >
                         {page}
                       </button>
                     ))}
                     <button
-                      className="px-4 bg-[#f6f7f9] text-grey-100"
+                      className="px-4 bg-grey-700 text-grey-100"
                       onClick={handleNext}
                     >
                       <span className="xs:inline-block hidden">Next</span>

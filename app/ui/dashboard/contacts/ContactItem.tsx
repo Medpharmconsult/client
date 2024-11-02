@@ -1,10 +1,11 @@
 "use client";
 import ProfileImg from "@/app/_components/ProfileImage";
 import { setContactId } from "@/app/_lib/actions";
-import { jwtDecode } from "jwt-decode";
-import { BsChevronRight } from "react-icons/bs";
+import { BsCheckAll, BsChevronRight } from "react-icons/bs";
 
 export interface contactProps {
+  sender: string;
+  userID: string;
   text: string;
   contactInfo: {
     primaryID: string;
@@ -23,15 +24,13 @@ export default function ContactItem({ contact }: { contact: contactProps }) {
           email: contact.contactInfo.email,
           firstName: contact.contactInfo.firstName,
           lastName: contact.contactInfo.lastName,
-          profileImg: contact.contactInfo?.profileImg
-            ? contact.contactInfo.profileImg
-            : "",
+          profileImg: contact.contactInfo?.profileImg ?? "",
           contactId: contact.contactInfo.primaryID,
         });
       }}
-      className="px-[16px] py-[12px] bg-white hover:bg-[#fafafa] border-grey-300 border-b-[1px] last:border-0  cursor-pointer  flex justify-between items-center"
+      className="px-4 py-3 bg-white hover:bg-[#fafafa] border-grey-300 border-b-1 last:border-0  cursor-pointer  flex justify-between items-center"
     >
-      <div className="flex gap-[16px] items-center ">
+      <div className="flex gap-4 items-center ">
         <div>
           <ProfileImg
             src={`${process.env.NEXT_PUBLIC_Host_Name}${contact.contactInfo?.profileImg}`}
@@ -45,13 +44,18 @@ export default function ContactItem({ contact }: { contact: contactProps }) {
             }
           />
         </div>
-        <div className="flex flex-col gap-y-[4px]">
+        <div className="flex flex-col gap-y-1">
           <h3 className="font-medium tracking-normal">
             {`${contact.contactInfo.lastName} ${contact.contactInfo.firstName}`}
           </h3>
-          <p className="text-grey-100 first-letter:capitalize">
-            {contact.text}
-          </p>
+          <div className="flex items-end gap-[2px]">
+            {contact.userID === contact.sender && (
+              <BsCheckAll size={22} className="text-grey-400" />
+            )}
+            <p className="text-grey-100  first-letter:capitalize">
+              {contact.text}
+            </p>
+          </div>
         </div>
       </div>
       <BsChevronRight className="text-grey-100" size={16} />

@@ -4,9 +4,10 @@ import Form from "@/app/_components/Form";
 import Heading from "@/app/_components/Heading";
 import SpinnerMini from "@/app/_components/SpinnerMini";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import { signUp } from "@/app/_lib/actions";
-import { getRandomNumber } from "@/app/_lib/utilities";
-import { useState, useTransition } from "react";
+import { capitalizeFirstLetter, getRandomNumber } from "@/app/_lib/utilities";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 interface SignUpProps {
@@ -16,15 +17,9 @@ interface SignUpProps {
   email: string;
 }
 
-const initialErrors = {
-  email: "",
-  username: "",
-};
-
 export default function SignupForm() {
   const { register, handleSubmit, formState } = useForm<SignUpProps>();
   const [isPending, startTransition] = useTransition();
-  const [serverError, setServerError] = useState(initialErrors);
   const {
     errors: { lastName, firstName, email, password },
   } = formState;
@@ -40,37 +35,22 @@ export default function SignupForm() {
     startTransition(async () => {
       const serverRes = await signUp(signUpData);
       if (serverRes) {
-        switch (true) {
-          case serverRes.includes("email"):
-            setServerError({ ...initialErrors, email: serverRes });
-            break;
-          case serverRes.includes("username"):
-            setServerError({ ...initialErrors, username: serverRes });
-            break;
-          default:
-        }
+        toast.error(capitalizeFirstLetter(serverRes));
       }
     });
   };
 
   return (
     <div>
-      <Heading type="h2" classname="text-center mb-[24px] xs:mb-[32px]">
+      <Heading type="h2" classname="text-center mb-6 xs:mb-8">
         Sign up
       </Heading>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group
-          label="First name"
-          error={firstName?.message || serverError.username}
-        >
+        <Form.Group label="First name" error={firstName?.message}>
           <Form.Input
             classname="w-full"
             placeholder="Enter your first name"
             {...register("firstName", {
-              onChange: () => {
-                if (serverError.username)
-                  setServerError({ ...serverError, username: "" });
-              },
               required: "This field is required",
             })}
           />
@@ -84,15 +64,11 @@ export default function SignupForm() {
             })}
           />
         </Form.Group>
-        <Form.Group label="Email" error={email?.message || serverError.email}>
+        <Form.Group label="Email" error={email?.message}>
           <Form.Input
             classname="w-full"
             placeholder="Enter email"
             {...register("email", {
-              onChange: () => {
-                if (serverError.email)
-                  setServerError({ ...serverError, email: "" });
-              },
               required: "This field is required",
               pattern: {
                 value: /\S+@\S+\.\S+/,
@@ -127,7 +103,7 @@ export default function SignupForm() {
         <Button classname="mt-[6px] w-full" disabled={isPending}>
           {isPending ? <SpinnerMini /> : "Sign up"}
         </Button>
-        <div className="text-center w-full mt-[12px] font-semibold text-grey-400">
+        <div className="text-center w-full mt-3 font-semibold text-grey-400">
           Already have an account?{" "}
           <Link href="/auth/signin" className="text-black-100">
             Sign in

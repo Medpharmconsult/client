@@ -9,18 +9,17 @@ interface RoundImageProps {
 export default function RoundImage({ src, alt, size = 56 }: RoundImageProps) {
   return (
     <div
-      className={`relative  rounded-full overflow-hidden   shadow-sm`}
+      className={`relative rounded-full overflow-hidden shadow-sm`}
       style={{
         width: `${size}px`,
         height: `${size}px`,
-        minWidth: `${size}px`,
       }}
     >
       <Image
         src={src}
         alt={alt}
         fill
-        className="object-cover z-1 "
+        className="object-cover"
         sizes={`${size}px`}
       />
       ;

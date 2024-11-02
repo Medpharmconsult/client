@@ -24,19 +24,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.className}  text-base tracking-[0.1px] antialiased text-black-100`}
+        className={`${inter.className} text-base tracking-[0.1px] antialiased text-black-100`}
       >
         <Toaster
           position="top-center"
           gutter={12}
-          containerStyle={{ margin: "8px" }}
+          containerClassName="mt-2"
           toastOptions={{
-            duration: 5000,
-            style: {
-              fontSize: "14px",
-              lineHeight: "20px",
-              borderRadius: "5px",
-            },
+            duration: 4000,
+            className: "text-sm rounded-5 ",
           }}
         />
         {children}

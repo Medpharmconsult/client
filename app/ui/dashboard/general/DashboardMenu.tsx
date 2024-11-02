@@ -4,12 +4,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { cloneElement } from "react";
 import { FaCog } from "react-icons/fa";
 import {
+  FaBriefcaseMedical,
   FaCalendarCheck,
   FaCalendarDays,
-  FaHospitalUser,
   FaMoneyBill,
   FaPalette,
-  FaUserDoctor,
   FaUserPlus,
   FaUsers,
 } from "react-icons/fa6";
@@ -67,19 +66,20 @@ const professionalMenu = [
 ];
 const adminMenu = [
   {
-    name: "Dashboard",
-    link: "/dashboard/admin",
-    icon: <FaPalette />,
+    name: "Add professional",
+    link: "/dashboard/admin/addProfessional",
+    icon: <FaUserPlus />,
   },
   {
     name: "Add profession",
     link: "/dashboard/admin/addProfession",
-    icon: <FaHospitalUser />,
+    icon: <FaBriefcaseMedical />,
   },
+
   {
-    name: "Add professional",
-    link: "/dashboard/admin/addProfessional",
-    icon: <FaUserPlus />,
+    name: "Settings",
+    link: "",
+    icon: <FaCog />,
   },
 ];
 export default function DashboardMenu({ userRole }: { userRole?: string }) {
@@ -114,10 +114,10 @@ export default function DashboardMenu({ userRole }: { userRole?: string }) {
           mobileNav ? "left-0" : "left-[-237px]"
         }  `}
       >
-        <div className="py-[32px] flex items-center border-b-[1px] border-secondary-200 px-[15px]">
+        <div className="py-8 flex items-center border-b-1 border-secondary-200 px-[15px]">
           <DashboardLogo isNavOpen={nav} />
         </div>
-        <div className="pt-[32px] px-[15px] ">
+        <div className="pt-8 px-[15px] ">
           <ul>
             {menu.map((item, index) => (
               <MenuItem
@@ -153,10 +153,10 @@ function MenuItem({
   handleRoute: Function;
 }) {
   return (
-    <li className="border-b-[1px] border-secondary-200 ">
+    <li className="border-b-1 border-secondary-200 ">
       <button
         onClick={() => handleRoute(href)}
-        className={`text-white transition-none flex items-center w-full gap-x-[12px] px-[12px] py-[12px] hover:bg-primary-200 ${
+        className={`text-white transition-none flex items-center w-full gap-x-3 px-3 py-3 hover:bg-primary-200 ${
           isActive ? "bg-primary-200" : ""
         } `}
       >

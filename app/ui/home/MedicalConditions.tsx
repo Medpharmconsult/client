@@ -36,7 +36,7 @@ export default function MedicalConditions() {
             <ul className="flex flex-wrap gap-[15px] justify-center items-center font-semibold text-primary-100">
               {conditionsData.map((condition, index) => (
                 <li
-                  className="rounded-[5px] bg-secondary-100  py-[8px] px-[16px]"
+                  className="rounded-5 bg-secondary-100  py-2 px-4"
                   key={index}
                 >
                   {condition}

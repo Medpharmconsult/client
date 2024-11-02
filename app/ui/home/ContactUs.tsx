@@ -80,12 +80,10 @@ export default function ContactUs() {
                   })}
                 />
               </Form.Group>
-              <Button
-                classname="mt-[6px] min-w-[161.78px] self-start"
-                disabled={isPending}
-              >
-                {isPending ? <SpinnerMini /> : "Send message"}
-              </Button>
+              <div className="mt-[6px] flex  items-center gap-4">
+                <Button disabled={isPending}>Send message</Button>
+                {isPending && <SpinnerMini fill="#1341A3" />}
+              </div>
             </Form>
           </div>
         </Section.Content>

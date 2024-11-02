@@ -7,8 +7,9 @@ export default function SetScheduleButton({
   isLoading?: boolean;
 }) {
   return (
-    <Button disabled={isLoading} classname="min-w-[149px]">
-      {isLoading ? <SpinnerMini /> : "Set schedule"}
-    </Button>
+    <div className="mt-[6px] gap-4 items-center flex">
+      <Button disabled={isLoading}>Set schedule</Button>
+      {isLoading && <SpinnerMini fill="#1341A3" />}
+    </div>
   );
 }

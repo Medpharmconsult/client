@@ -9,7 +9,7 @@ export default function DashboardNav({ session }: { session: SessionData }) {
   const { nav, toggleNav, toggleMobileNav } = useDashboardContext();
   return (
     <nav
-      className={`bg-white min-h-[80px] w-full fixed left-0 top-0 border-b-[1px] md:px-[17px]   flex items-center border-grey-300 z-20 ${
+      className={`bg-white min-h-20 w-full fixed left-0 top-0 border-b-1 md:px-[17px]  flex items-center border-grey-300 z-20 ${
         nav
           ? "md:left-[237px] md:w-[calc(100%-237px)]"
           : "md:left-[79px] md:w-[calc(100%-79px)]"

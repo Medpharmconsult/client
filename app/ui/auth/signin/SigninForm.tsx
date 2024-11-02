@@ -3,10 +3,12 @@ import Button from "@/app/_components/Button";
 import Form from "@/app/_components/Form";
 import Heading from "@/app/_components/Heading";
 import SpinnerMini from "@/app/_components/SpinnerMini";
-import Link from "next/link";
 import { signIn } from "@/app/_lib/actions";
-import { useState, useTransition } from "react";
+import { capitalizeFirstLetter } from "@/app/_lib/utilities";
+import Link from "next/link";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 interface SignInProps {
   email: string;
@@ -14,58 +16,34 @@ interface SignInProps {
   role: string;
 }
 
-const initialErrors = {
-  email: "",
-  password: "",
-};
-
-export default function LoginForm({ isAdmin }: { isAdmin?: boolean }) {
+export default function LoginForm({ isAdmin = false }: { isAdmin?: boolean }) {
   const { register, handleSubmit, formState } = useForm<SignInProps>();
-  const [serverError, setServerError] = useState(initialErrors);
   const {
     errors: { email, password, role },
   } = formState;
   const [isPending, startTransition] = useTransition();
   const onSubmit = (data: SignInProps) => {
     const signInData = { email: data.email, password: data.password };
-    const userRole = data.role;
+    const role = data.role;
     startTransition(async () => {
-      const serverRes = await signIn(signInData, userRole);
+      const serverRes = await signIn(signInData, role);
       if (serverRes) {
-        switch (true) {
-          case serverRes.includes("email"):
-            setServerError({
-              ...initialErrors,
-              email: "invalid email or password",
-            });
-            break;
-          case serverRes.includes("password"):
-            setServerError({
-              ...initialErrors,
-              password: "incorrect password format",
-            });
-            break;
-          default:
-        }
+        toast.error(capitalizeFirstLetter(serverRes));
       }
     });
   };
   return (
     <div>
-      <Heading type="h2" classname="text-center mb-[24px] xs:mb-[32px]">
+      <Heading type="h2" classname="text-center mb-6 xs:mb-8">
         Sign in
       </Heading>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group label="Email" error={email?.message || serverError.email}>
+        <Form.Group label="Email" error={email?.message}>
           <Form.Input
             classname="w-full"
             placeholder="Enter email"
             {...register("email", {
               required: "This field is required",
-              onChange: () => {
-                if (serverError.email)
-                  setServerError({ ...serverError, email: "" });
-              },
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: "Invalid email",
@@ -73,19 +51,12 @@ export default function LoginForm({ isAdmin }: { isAdmin?: boolean }) {
             })}
           />
         </Form.Group>
-        <Form.Group
-          label="Password"
-          error={password?.message || serverError.password}
-        >
+        <Form.Group label="Password" error={password?.message}>
           <Form.Input
             classname="w-full"
             placeholder="Enter password"
             type="password"
             {...register("password", {
-              onChange: () => {
-                if (serverError.password || serverError.email)
-                  setServerError(initialErrors);
-              },
               required: "This field is required",
             })}
           />
@@ -112,7 +83,7 @@ export default function LoginForm({ isAdmin }: { isAdmin?: boolean }) {
           {isPending ? <SpinnerMini /> : "Sign in"}
         </Button>
         {!isAdmin && (
-          <div className="text-center w-full mt-[12px] font-semibold text-grey-400">
+          <div className="text-center w-full mt-3 font-semibold text-grey-400">
             Don't have an account?{" "}
             <Link href="/auth/signup" className="text-black-100">
               Sign up

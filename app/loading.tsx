@@ -3,7 +3,7 @@ import Container from "./_components/Container";
 export default function Loading() {
   return (
     <Container>
-      <div className="text-center min-h-[100dvh] flex items-center justify-center relative">
+      <div className="text-center min-h-dvh flex items-center justify-center relative">
         <div>
           <svg
             width="96"
@@ -20,7 +20,7 @@ export default function Loading() {
           </svg>
         </div>
         <svg
-          className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+          className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]"
           width="40"
           height="40"
           viewBox="0 0 40 40"
