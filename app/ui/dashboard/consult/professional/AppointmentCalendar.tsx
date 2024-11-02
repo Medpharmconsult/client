@@ -35,7 +35,7 @@ export default function AppointmentCalendar({
         <CalendarPage />
       ) : (
         <>
-          <div className="flex justify-between items-center border-grey-300 border-b-[1px] pb-[12px] mb-[12px]">
+          <div className="flex justify-between items-center border-grey-300 border-b-1 pb-3 mb-3">
             <button
               onClick={() => {
                 setDate(undefined);
@@ -45,7 +45,7 @@ export default function AppointmentCalendar({
             >
               <BsChevronLeft size={18} />
             </button>
-            <div className="font-semibold flex gap-[8px] text-[18px] tracking-normal self-center">
+            <div className="font-semibold flex gap-2 text-[18px] tracking-normal self-center">
               <span>{date?.toDateString()}</span>
             </div>
             <div className="h-[18px] w-[18px]"></div>

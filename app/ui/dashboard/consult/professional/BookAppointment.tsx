@@ -65,13 +65,13 @@ export default function BookAppointment({ profID }: { profID: string }) {
                 <SpinnerMini fill="#1341A3" />
               </div>
             ) : (
-              <div className="flex flex-wrap gap-[8px] items-center justify-center">
+              <div className="flex flex-wrap gap-2 items-center justify-center">
                 {appointmentTimes?.map((time, index) => (
                   <button
                     disabled={isPending}
                     key={index}
                     onClick={() => handleBooking(time._id)}
-                    className="text-[12px]/[16px] font-semibold tracking-[0.4px] text-grey-100 border-[1px]  bg-[#f6f7f9] hover:bg-primary-100 hover:text-white rounded-full px-[16px]  py-[8px]"
+                    className="text-xs font-semibold tracking-[0.4px] text-grey-100 border-1  bg-grey-700 hover:bg-primary-100 hover:text-white rounded-full px-4  py-2"
                   >{`${timeMap[time.startTime]} - ${
                     timeMap[time.endTime]
                   }`}</button>

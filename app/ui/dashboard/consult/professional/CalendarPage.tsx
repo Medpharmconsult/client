@@ -21,7 +21,7 @@ export default function CalendarPage() {
   });
   return (
     <>
-      <div className="flex justify-between items-center border-grey-300 border-b-[1px] pb-[12px] mb-[12px]">
+      <div className="flex justify-between items-center border-grey-300 border-b-1 pb-3 mb-3">
         <button
           onClick={() => setIsCurrent(true)}
           disabled={isCurrent}

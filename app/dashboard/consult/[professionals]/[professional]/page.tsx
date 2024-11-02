@@ -1,9 +1,9 @@
 import Card from "@/app/_components/Card";
 import ProfileImg from "@/app/_components/ProfileImage";
 import Row from "@/app/_components/Row";
-import AppointmentCalendar from "@/app/ui/dashboard/consult/appointment/AppointmentCalendar";
+import AppointmentCalendar from "@/app/ui/dashboard/consult/professional/AppointmentCalendar";
 import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
-import ChatButton from "@/app/ui/dashboard/consult/ChatButton";
+import ChatButton from "@/app/ui/dashboard/consult/professional/ChatButton";
 import NoResults from "@/app/ui/dashboard/general/NoResults";
 import { getMonthAppointments, getProfessional } from "@/app/_lib/services";
 import { getCurrentMonth, getNextMonth } from "@/app/_lib/utilities";
