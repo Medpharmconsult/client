@@ -1,50 +1,63 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
+@layer components {
+  .spinner-mini {
+    margin: 0;
+    width: 20px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border-width: 3px;
+    border-right-color: transparent;
+    animation: rotate 1s infinite linear;
+  }
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn);
+    }
   }
 }
 
-*{
+* {
   margin: 0;
   padding: 0;
+  text-decoration: none;
   box-sizing: border-box;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  font-size: 16px; 
-  
+.rdp-root {
+  --rdp-accent-color: black; /* Change the accent color to indigo. */
+  --rdp-accent-background-color: #f0f0f0; /* Change the accent background color. */
+  /* Add more CSS variables here. */
 }
 
-h1{
-  color: #1341A3;
-  font-size: 3rem;
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
 }
-@media (max-width: 950px) {
-  h1{
-    font-size: 2rem;
-  }
-}
-@media (max-width: 630px) {
-  h1{
-    font-size: 1.5rem;
-  }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }
 
-h2{
-  color: #1341A3;
-  font-size: 2rem;
+button,
+a {
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+select {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 1px solid #333;
+  outline-offset: -1px;
 }
