@@ -29,7 +29,7 @@ export default function Specialities() {
             <ul className="flex-wrap flex items-center justify-center gap-x-[30px] gap-y-8 ">
               {specialtiesData.map((specialty, index) => (
                 <li key={index}>
-                  <div className="h-32 w-32 xs:h-48 rounded-full xs:w-48 relative overflow-hidden">
+                  <div className="h-32 w-32 lg:h-48 xs:w-40 xs:h-40 rounded-full lg:w-48 relative overflow-hidden">
                     <Image
                       src={specialty.image}
                       fill

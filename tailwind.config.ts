@@ -47,8 +47,12 @@ const config: Config = {
       },
     },
     screens: {
+      cxl: {
+        raw: "(min-width: 1024px) and (max-height: 1000px)",
+      },
       "mh-lg": { raw: "(min-height: 700px && max-height: 800px)" },
       xs: { raw: "(min-width: 480px)" },
+      md2: { raw: "(min-width: 840px)" },
       ...defaultTheme.screens,
       ld: { raw: "(min-width: 1380px)" },
     },
