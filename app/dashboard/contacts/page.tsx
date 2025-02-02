@@ -1,17 +1,21 @@
-import ContactsUi from "@/app/ui/dashboard/contacts/ContactsUi";
-import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
-import { getContactsList, getToken } from "@/app/_lib/services";
+import AdminScreen from "@/app/_components/AdminScreen";
+import ContactList from "@/app/_components/ContactList";
+import { fetchContacts, fetchToken } from "@/app/_lib/services";
 export const metadata = {
   title: "Contacts",
 };
-export default async function Contacts() {
-  const token = await getToken();
-  const res = await getContactsList();
-  const contactsList = res?.responseData.contacts;
+export default async function Page() {
+  // Fetch token
+  const token = await fetchToken();
+  // Fetch contacts
+  const contacts = await fetchContacts();
+  const data = contacts.responseData.contacts;
 
   return (
-    <DashboardScreen title="Contacts">
-      <ContactsUi token={token} contacts={contactsList} />
-    </DashboardScreen>
+    <AdminScreen title="Contacts">
+      {contacts.statusCode === 200 && data && token && (
+        <ContactList token={token} contacts={contacts.responseData.contacts} />
+      )}
+    </AdminScreen>
   );
 }

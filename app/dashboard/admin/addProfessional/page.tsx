@@ -1,17 +1,18 @@
-import AddProfessionalForm from "@/app/ui/dashboard/admin/addProfessional/AddProfessionalForm";
-import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
-import { getProfessions } from "@/app/_lib/services";
+import AddProfessionalForm from "@/app/_components/AddProfessionalForm";
+import AdminScreen from "@/app/_components/AdminScreen";
+import { fetchProfessions } from "@/app/_lib/services";
 export const metadata = {
   title: "Add Professional",
 };
-export default async function AddProfessional() {
-  const res = await getProfessions();
-  const professions = res?.responseData;
+export default async function Page() {
+  // Fetch professions
+  const data = await fetchProfessions();
+  const professions = data.responseData;
   return (
-    <DashboardScreen title="Add professional">
-      <div className="bg-white border-grey-300 border-1 rounded-5 px-4 py-6">
-        <AddProfessionalForm professions={professions} />
+    <AdminScreen title="Add professional">
+      <div className="bg-white border-grey-300 border-1 rounded-5 px-4 xs:px-6 py-6">
+        {professions && <AddProfessionalForm data={professions} />}
       </div>
-    </DashboardScreen>
+    </AdminScreen>
   );
 }

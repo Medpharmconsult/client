@@ -1,222 +1,219 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { fetchUser, getSession, getToken } from "./services";
-import { apiFetcher } from "./utilities";
-interface signUpProps {
-  firstName: string;
-  lastName: string;
-  password: string;
-  email: string;
-  username: string;
-}
+import { fetchUser, fetchToken, fetchSession } from "./services";
+import { dashboardLink } from "./utilities";
+import {
+  addProfessionalResType,
+  addProfessionalType,
+  bookAppointmentResType,
+  mailType,
+  signInResType,
+  signInType,
+  signUpResType,
+  signUpType,
+} from "./types";
 
-interface SignInProps {
-  email: string;
-  password: string;
-}
-
-interface SignUpResponse {
-  statusCode: number;
-  mpcToken: string;
-  msg: string;
-}
-
-interface SignInResponse {
-  statusCode: number;
-  responseData: { msg: string; mpcToken: string };
-}
-
-interface MailData {
-  name: string;
-  message: string;
-  email: string;
-}
-
-export interface SetScheduleRangeProps {
-  month: string;
-  scheduleType: string;
-  startDay?: string;
-  endDay?: string;
-  startTime?: string;
-  startMeridian?: string;
-  endTime?: string;
-  endMeridian?: string;
-}
-
-export interface AddProfessionalProps {
-  firstName: string;
-  lastName: string;
-  username: string;
-  profession: string;
-  gender: string;
-  yoe: number;
-  phoneNo: string;
-  email: string;
-  password: string;
-  profCode: string;
-}
-
+/**
+ *** SIGN OUT ****
+ **/
 export async function signOut() {
-  const session = await getSession();
+  const session = await fetchSession();
   session.destroy();
   revalidatePath("/");
   redirect("/");
 }
 
-export async function setScheduleRange(data: SetScheduleRangeProps) {
-  const token = await getToken();
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/set-schedule`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    }
-  )) as {
-    statusCode: number;
-    responseData: { msg: string };
-  };
-  if (res.statusCode === 200) return true;
-  else return false;
+/**
+ *** SET SCHEDULE ****
+ **/
+export async function setSchedule(formData: FormData) {
+  // Fetch token
+  const token = await fetchToken();
+  // Get data from form
+  const data = Object.fromEntries(formData);
+  if (!token) return;
+  return await fetch(`${process.env.NEXT_PUBLIC_Host_Name}/set-schedule`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response: Response) => response.json())
+    .then((data: { statusCode: number; responseData: { msg: string } }) => {
+      console.log(data.responseData.msg);
+      if (data.statusCode === 200) return true;
+    })
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
 }
 
-export async function signIn(signInData: SignInProps, role: string) {
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/${role}-login`,
+/**
+ *** SIGN IN ****
+ **/
+export async function signIn(formData: signInType) {
+  // Fetch session
+  const session = await fetchSession();
+  return await fetch(
+    `${process.env.NEXT_PUBLIC_Host_Name}/${formData.role}-login`,
     {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(signInData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+      }),
     }
-  )) as SignInResponse;
-  if (res.statusCode == 200) {
-    const session = await getSession();
-    const user = await fetchUser(res.responseData.mpcToken);
-    if (user) {
-      session.email = user.email;
-      session.firstName = user.firstName;
-      session.lastName = user.lastName;
-      session.role = user.role;
-      session.token = user.token;
-      session.profileImg = user.profileImg;
-      session.isLoggedIn = true;
-      await session.save();
-    }
-  } else {
-    return res.responseData.msg;
-  }
-
-  switch (role) {
-    case "patient":
-      redirect("/dashboard/consult");
-    case "professional":
-      redirect("/dashboard/staff");
-    case "admin":
-      redirect("/dashboard/admin/addProfessional");
-    default:
-  }
+  )
+    .then((response: Response) => response.json())
+    .then(async (data: signInResType) => {
+      if (data.statusCode === 200) {
+        // Fetch user
+        const userResponse = await fetchUser(data.responseData.mpcToken);
+        if (userResponse.statusCode === 200) {
+          // Set new session
+          session.user = userResponse.responseData.userData;
+          session.user.role = formData.role;
+          session.token = session.user.token = data.responseData.mpcToken;
+          session.isLoggedIn = true;
+          await session.save();
+        }
+      } else {
+        // Return error message
+        return data.responseData.msg;
+      }
+    })
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    })
+    .finally(() => {
+      // Redirect user
+      const redirectURL = dashboardLink(formData.role);
+      if (session.isLoggedIn) redirect(redirectURL);
+    });
 }
 
-export async function sendMail(data: MailData) {
+/**
+ *** SEND MESSAGE ****
+ **/
+export async function sendMessage(data: mailType) {
   const email = {
     service_id: `${process.env.NEXT_PUBLIC_Email_Service_ID}`,
     template_id: `${process.env.NEXT_PUBLIC_Email_Template_ID}`,
     user_id: `${process.env.NEXT_PUBLIC_Email_User_ID}`,
     template_params: data,
   };
-  try {
-    const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-      method: "POST",
-      body: JSON.stringify(email),
-      headers: {
-        "Content-Type": "application/json",
-      },
+  return await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+    method: "POST",
+    body: JSON.stringify(email),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response: Response) => {
+      if (response.ok) return true;
+    })
+    .catch((err: Error) => {
+      throw new Error(err.message);
     });
-    if (res.ok) return true;
-    else return false;
-  } catch (err: unknown) {
-    if (err instanceof Error) console.error(err.message);
-  }
 }
 
-export async function setContactId(contact: {
-  firstName: string;
-  lastName: string;
-  email: string;
-  contactId: string;
+/**
+ *** SET CONTACT ****
+ **/
+export async function setContact(contact: {
+  username: string;
+  id: string;
   profileImg: string;
 }) {
-  const session = await getSession();
-  if (contact?.contactId) {
-    session.contact = contact;
-    await session.save();
-    redirect("/dashboard/message");
-  }
+  // Fetch session
+  const session = await fetchSession();
+  // Update session
+  session.contact = contact;
+  await session.save();
+  redirect("/dashboard/message");
 }
 
-export async function bookAppointment(bookingId: string) {
-  const token = await getToken();
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/book-appointment`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ scheduleId: bookingId }),
-    }
-  )) as { statusCode: number; responseData: { msg: string } };
-  if (res.statusCode === 200) return true;
-  else return false;
+/**
+ *** BOOK APPOINTMENT ****
+ **/
+export async function bookAppointment(id: string) {
+  // Fetch token
+  const token = await fetchToken();
+  if (!token) return;
+  return await fetch(`${process.env.NEXT_PUBLIC_Host_Name}/book-appointment`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ scheduleId: id }),
+  })
+    .then((response) => response.json())
+    .then((data: bookAppointmentResType) => data)
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
 }
 
-export async function signUp(signUpData: signUpProps) {
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/patient-signup`,
-    {
-      method: "POST",
-      body: JSON.stringify(signUpData),
-      headers: { "Content-Type": "application/json" },
-    }
-  )) as SignUpResponse;
-  if (res.statusCode === 200) {
-    const session = await getSession();
-    const user = await fetchUser(res.mpcToken);
-    if (user) {
-      session.email = user.email;
-      session.firstName = user.firstName;
-      session.lastName = user.lastName;
-      session.role = user.role;
-      session.token = user.token;
-      session.isLoggedIn = true;
-      session.profileImg = user.profileImg;
-      await session.save();
-    }
-  } else {
-    return res.msg;
-  }
-  redirect("/dashboard/consult");
+/**
+ *** SIGN UP ****
+ **/
+export async function signUp(data: signUpType) {
+  // Fetch session
+  const session = await fetchSession();
+  return await fetch(`${process.env.NEXT_PUBLIC_Host_Name}/patient-signup`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((response: Response) => response.json())
+    .then(async (data: signUpResType) => {
+      if (data.statusCode === 200) {
+        // Fetch user
+        const userResponse = await fetchUser(data.mpcToken);
+        if (userResponse.statusCode === 200) {
+          // Set new session
+          session.user = userResponse.responseData.userData;
+          session.user.role = "patient";
+          session.token = session.user.token = data.mpcToken;
+          session.isLoggedIn = true;
+          await session.save();
+        }
+      } else {
+        // Return error message
+        return data.msg;
+      }
+    })
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    })
+    .finally(() => {
+      // Redirect user
+      if (session.isLoggedIn) redirect("/dashboard/consult");
+    });
 }
 
-export async function addProfessional(data: AddProfessionalProps) {
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/professional-signup`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }
-  )) as {
-    statusCode: number;
-    msg: string;
-    responseData: Array<{ _id: string; name: string; code: string }>;
-  };
-  if (res.statusCode === 200)
-    return { status: true, msg: "Professional added successfully" };
-  else return { status: false, msg: res.msg };
+/**
+ *** ADD PROFESSIONAL ****
+ **/
+
+export async function addProfessional(data: addProfessionalType) {
+  return fetch(`${process.env.NEXT_PUBLIC_Host_Name}/professional-signup`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((response: Response) => response.json())
+    .then((data: addProfessionalResType) => {
+      if (data.statusCode === 200) return true;
+    })
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
 }

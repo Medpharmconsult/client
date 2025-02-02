@@ -14,10 +14,10 @@ export default function Error({
     <div>
       <Container>
         <div className="text-center min-h-dvh flex items-center justify-center flex-col max-w-[525px] w-full mx-auto">
-          <Heading type="h1" classname="text-primary-100">
+          <Heading type="h1" styles="text-primary-100">
             Something went wrong!
           </Heading>
-          <Heading type="h2" classname="mt-2 mb-4">
+          <Heading type="h2" styles="mt-2 mb-4">
             Please try again
           </Heading>
           <p className="mb-6 text-grey-100 first-letter:capitalize">

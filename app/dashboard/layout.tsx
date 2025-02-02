@@ -1,26 +1,28 @@
-import DashboardContent from "../ui/dashboard/general/DashboardContent";
-import { getSession } from "../_lib/services";
-import { DashboardContextProvider } from "@/context/DashboardContext";
+import AdminContent from "../_components/AdminContent";
+import AdminContextProvider from "@/context/AdminContext";
+import { fetchSession } from "../_lib/services";
 
 export const metadata = {
   title: {
-    template: "Dashboard - %s",
-    default: "Dashboard",
+    template: "%s - Medpharm Consult",
+    default: "Medpharm Consult",
   },
 };
 
-export default async function DashboardLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactElement;
 }) {
-  const session = await getSession();
-
+  // Fetch session
+  const session = await fetchSession();
   return (
     <div className="flex min-h-dvh bg-grey-200">
-      <DashboardContextProvider>
-        <DashboardContent session={{ ...session }}>{children}</DashboardContent>
-      </DashboardContextProvider>
+      <AdminContextProvider>
+        {session.isLoggedIn && session.user && (
+          <AdminContent user={session.user}>{children}</AdminContent>
+        )}
+      </AdminContextProvider>
     </div>
   );
 }

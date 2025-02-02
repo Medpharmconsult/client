@@ -10,13 +10,11 @@ export default function useSocket(token: string) {
     if (!socket) {
       socket = io(`${process.env.NEXT_PUBLIC_Host_Name}`);
       socket?.on("connect", () => {
-        console.log("connected");
         const user = jwtDecode(`${token}`) as { userID: string };
         socket?.emit("addActiveUser", user.userID);
       });
     }
   }, []);
-
   return socket;
 }
 

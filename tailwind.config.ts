@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -41,20 +41,19 @@ const config: Config = {
           text: "#bf1c1c",
         },
       },
-      backgroundImage: {
-        "hero-desktop": "url('/hero-desktop.jpg')",
-        "hero-mobile": "url('/hero-mobile.jpg')",
-      },
     },
     screens: {
+      ...defaultTheme.screens,
+      cxxl: { raw: "(min-width: 1380px)" },
       cxl: {
         raw: "(min-width: 1024px) and (max-height: 1000px)",
       },
-      "mh-lg": { raw: "(min-height: 700px && max-height: 800px)" },
+      clg: {
+        raw: "(min-width: 1100px)",
+      },
       xs: { raw: "(min-width: 480px)" },
+      xxs: { raw: "(min-width: 400px)" },
       md2: { raw: "(min-width: 840px)" },
-      ...defaultTheme.screens,
-      ld: { raw: "(min-width: 1380px)" },
     },
   },
   plugins: [],

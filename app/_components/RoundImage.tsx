@@ -1,28 +1,21 @@
 import Image from "next/image";
+import { roundImage } from "../_lib/types";
 
-interface RoundImageProps {
-  src: string;
-  alt: string;
-  size?: number;
-}
-
-export default function RoundImage({ src, alt, size = 56 }: RoundImageProps) {
+export default function RoundImage({
+  src,
+  alt,
+  size = 56,
+  priority,
+}: roundImage) {
   return (
-    <div
-      className={`relative rounded-full overflow-hidden shadow-sm`}
-      style={{
-        width: `${size}px`,
-        height: `${size}px`,
-      }}
-    >
+    <div className={`relative rounded-full overflow-hidden`}>
       <Image
-        src={src}
+        src={src ? src : ""}
         alt={alt}
-        fill
-        className="object-cover"
-        sizes={`${size}px`}
+        width={size}
+        height={size}
+        priority={priority}
       />
-      ;
     </div>
   );
 }

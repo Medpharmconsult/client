@@ -1,53 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "./app/_lib/services";
+import { fetchSession } from "./app/_lib/services";
+import { dashboardLink } from "./app/_lib/utilities";
 
 export async function middleware(req: NextRequest) {
+  // Get path
   const { pathname } = req.nextUrl;
-  const session = await getSession();
-  const role: any = session?.role;
-
-  function handleDashboardRedirect() {
-    switch (role) {
-      case "patient":
-        return NextResponse.redirect(new URL("/dashboard/consult", req.url));
-      case "professional":
-        return NextResponse.redirect(new URL("/dashboard/staff", req.url));
-      case "admin":
-        return NextResponse.redirect(
-          new URL("/dashboard/admin/addProfessional", req.url)
-        );
-      default:
-        return NextResponse.next();
-    }
+  // Fetch session
+  const session = await fetchSession();
+  // Get user role
+  const role = session.user?.role;
+  // Redirect user based on role
+  function redirect() {
+    const url = dashboardLink(role);
+    return NextResponse.redirect(new URL(url, req.url));
   }
-
+  // Blocking auth path if user is logged in
   if (pathname.startsWith("/auth") && session.isLoggedIn) {
-    // Blocking auth path when user is logged in
-    return handleDashboardRedirect();
+    return redirect();
   }
-
-  if (pathname.startsWith("/dashboard") && !session.isLoggedIn)
-    return NextResponse.redirect(new URL("/", req.url));
-  else {
+  // Blocking admin if user is not logged in
+  if (pathname.startsWith("/dashboard") && !session.isLoggedIn) {
+    return redirect();
+  } else {
     if (pathname.startsWith("/dashboard/consult") && role !== "patient") {
-      return handleDashboardRedirect();
+      return redirect();
     }
-
     if (pathname.startsWith("/dashboard/staff") && role !== "professional") {
-      return handleDashboardRedirect();
+      return redirect();
     }
-
-    if (pathname.startsWith("/dashboard/admin") && role !== "admin")
-      return handleDashboardRedirect();
-
+    if (pathname.startsWith("/dashboard/admin") && role !== "admin") {
+      return redirect();
+    }
     if (
       pathname.startsWith("/dashboard/message") ||
       pathname.startsWith("/dashboard/contacts")
     ) {
-      if (!["patient", "professional"].includes(role))
-        return handleDashboardRedirect();
+      if (!["patient", "professional"].includes(`${role}`)) {
+        return redirect();
+      }
     }
   }
+  return NextResponse.next();
 }
 
 export const config = {

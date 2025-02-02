@@ -1,4 +1,6 @@
-const headingType = {
+import { headingType } from "../_lib/types";
+
+const types = {
   h1: "lg:text-[45px]/[52px]  font-bold text-[36px]/[44px]",
   h2: "lg:text-[36px]/[44px] font-bold text-[32px]/[40px]",
   h3: "lg:text-[32px]/[40px] font-bold text-[28px]/[36px]",
@@ -7,13 +9,10 @@ const headingType = {
 
 export default function Heading({
   children,
-  classname,
+  styles,
   type = "h4",
-}: {
-  children: React.ReactNode;
-  classname?: string;
-  type?: "h1" | "h2" | "h3" | "h4";
-}) {
-  const className = `tracking-normal ${classname} ${headingType[type]} `;
-  return <h1 className={className}>{children}</h1>;
+}: headingType) {
+  return (
+    <h1 className={`tracking-normal ${styles} ${types[type]}`}>{children}</h1>
+  );
 }

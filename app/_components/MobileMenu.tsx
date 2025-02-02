@@ -7,14 +7,20 @@ import {
   useRef,
   useState,
 } from "react";
+import { mobileContextType } from "../_lib/types";
 
-const MobileMenuContext = createContext<any>(undefined);
+const MobileMenuContext = createContext<mobileContextType | undefined>(
+  undefined
+);
 
-export default function MobileMenu({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const useMobileContext = () => {
+  const context = useContext(MobileMenuContext);
+  if (context === undefined)
+    throw new Error("MobileMenuContext was used outside provider");
+  return context;
+};
+
+function MobileMenu({ children }: { children: React.ReactNode }) {
   const [isVisible, setIsVisible] = useState(false);
   const buttonRef = useRef<HTMLElement>(null);
   const toggleMenu = () => setIsVisible((v) => !v);
@@ -27,35 +33,33 @@ export default function MobileMenu({
   );
 }
 
-function MobileMenuButton({ children }: { children: React.ReactElement }) {
-  const { toggleMenu, buttonRef } = useContext(MobileMenuContext);
-
+function Button({ children }: { children: React.ReactElement }) {
+  const { toggleMenu, buttonRef } = useMobileContext();
   return cloneElement(children, {
     onClick: toggleMenu,
     ref: buttonRef,
   });
 }
 
-function MobileMenuIcon({
+function Icon({
   children,
-  alternate,
+  altIcon,
 }: {
   children: React.ReactElement;
-  alternate: React.ReactElement;
+  altIcon: React.ReactElement;
 }) {
-  const { isVisible } = useContext(MobileMenuContext);
-  return <>{isVisible ? alternate : children}</>;
+  const { isVisible } = useMobileContext();
+  return <>{isVisible ? altIcon : children}</>;
 }
 
-function MobileMenuList({ children }: { children: React.ReactNode }) {
-  const { isVisible, setIsVisible, buttonRef } = useContext(MobileMenuContext);
+function List({ children }: { children: React.ReactNode }) {
+  const { isVisible, setIsVisible, buttonRef } = useMobileContext();
   const listRef = useRef<HTMLUListElement>(null);
   useEffect(() => {
-    const closeMenu = (e: Event) => {
+    const closeMenu = (e: MouseEvent) => {
       if (
-        e.target !== listRef.current &&
-        !listRef.current?.contains(e.target as Node) &&
-        e.target !== buttonRef.current
+        !listRef.current?.contains(e.target as HTMLElement) &&
+        (e.target as HTMLElement) !== buttonRef.current
       )
         setIsVisible(false);
     };
@@ -69,7 +73,7 @@ function MobileMenuList({ children }: { children: React.ReactNode }) {
       {isVisible && (
         <ul
           ref={listRef}
-          className="absolute right-0 top-full  bg-primary-100 text-white z-10  min-w-[150px] shadow-lg "
+          className="absolute right-0 top-full bg-primary-100 rounded-b-5 overflow-hidden text-white z-10 min-w-[150px] shadow-lg "
         >
           {children}
         </ul>
@@ -78,16 +82,20 @@ function MobileMenuList({ children }: { children: React.ReactNode }) {
   );
 }
 
-function MobileMenuItem({ children }: { children: React.ReactElement }) {
-  const ListLink = cloneElement(children, {
-    className:
-      "py-3 w-full px-[15px] inline-block text-left hover:bg-primary-200 transition-none flex items-center gap-3",
-  });
+function Item({ children }: { children: React.ReactElement }) {
   return (
     <li className="flex items-center text-sm border-b-1 border-b-secondary-200 last:border-b-0">
-      {ListLink}
+      {cloneElement(children, {
+        className:
+          "py-3 w-full px-[15px] inline-block text-left hover:bg-primary-200 transition-none flex items-center gap-3",
+      })}
     </li>
   );
 }
 
-export { MobileMenuButton, MobileMenuIcon, MobileMenuItem, MobileMenuList };
+MobileMenu.Button = Button;
+MobileMenu.Icon = Icon;
+MobileMenu.List = List;
+MobileMenu.Item = Item;
+
+export default MobileMenu;

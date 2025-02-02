@@ -1,17 +1,13 @@
 function Row({
   children,
-  hasSpacing = true,
-  classname = "",
+  styles = "",
 }: {
   children: React.ReactNode;
-  hasSpacing?: boolean;
-  classname?: string;
+  styles?: string;
 }) {
   return (
     <div
-      className={` flex flex-wrap ${classname}  ${
-        hasSpacing ? "mx-[-15px] gap-y-[30px] *:px-[15px]" : ""
-      }`}
+      className={`flex flex-wrap ${styles} mx-[-7.5px] gap-y-6 *:px-[7.5px]`}
     >
       {children}
     </div>
@@ -20,12 +16,12 @@ function Row({
 
 function Column({
   children,
-  breakPoints = "",
+  styles = "",
 }: {
   children: React.ReactNode;
-  breakPoints?: string;
+  styles?: string;
 }) {
-  return <div className={`w-full ${breakPoints}`}>{children}</div>;
+  return <div className={`w-full ${styles}`}>{children}</div>;
 }
 
 Row.Column = Column;

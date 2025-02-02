@@ -1,300 +1,273 @@
 import { getIronSession } from "iron-session";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-import { defaultSession, SessionData, sessionOptions } from "./session";
-import { apiFetcher, formatDate, getHour, timeMap } from "./utilities";
+import { sessionOptions } from "./session";
+import {
+  fetchAppointmentsResType,
+  fetchBookedAppointmentsResType,
+  fetchContactsResType,
+  fetchMessagesResType,
+  fetchProfessionalResType,
+  fetchProfessionalsResType,
+  fetchUserResType,
+  getProfessionsResType,
+  sessionType,
+} from "./types";
+import { formatDate, getHour, timeMap } from "./utilities";
 
-interface FetchUserResponse {
-  statusCode: number;
-  responseData: {
-    msg: string;
-    userData: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      profileImg?: string;
-    };
-  };
-}
-
-interface FetchContactsListResponse {
-  statusCode: number;
-  responseData: {
-    msg: string;
-    contacts: {
-      userID: string;
-      text: string;
-      sender: string;
-      contactInfo: {
-        primaryID: string;
-        firstName: string;
-        lastName: string;
-        profileImg?: string;
-        email: string;
-      };
-    }[];
-  };
-}
-
-interface GetProfessionsResponse {
-  statusCode: number;
-  msg: string;
-  responseData: Array<{
-    _id: string;
-    name: string;
-    code: string;
-    collection: string;
-  }>;
-}
-
-interface GetMessagesResponse {
-  statusCode: number;
-  responseData: {
-    msg: string;
-    messages: [
-      {
-        text: string;
-        sender: string;
-        receiver: string;
-      }
-    ];
-  };
-}
-
-interface GetProfessionalResponse {
-  statusCode: number;
-  responseData: {
-    msg: string;
-    professional: {
-      _id: string;
-      firstName: string;
-      lastName: string;
-      username: string;
-      phoneNo: string;
-      profileImg: string;
-      profession: string;
-      yoe: number;
-      email: string;
-    };
-  };
-}
-
-interface GetProfessionalsResponse {
-  statusCode: number;
-  responseData: {
-    msg: string;
-    professionals: Array<{
-      _id: string;
-      firstName: string;
-      lastName: string;
-      username: string;
-      yoe: number;
-      profileImg: string;
-      profession: string;
-      email: string;
-    }>;
-  };
-}
-
-interface GetAppointmentsResponse {
-  statusCode: number;
-  responseData: {
-    msg: string;
-    appointmentDays: [{ _id: string; month: string; day: number }];
-  };
-}
-
-export interface GetAppointmentTimesResponse {
-  statusCode: number;
-  responseData: {
-    msg: string;
-    appointmentTimes: [
-      {
-        _id: string;
-        startTime: number;
-        endTime: number;
-        startMeridian: string;
-        endMeridian: string;
-      }
-    ];
-  };
-}
-
-interface GetBookedAppointmentsResponse {
-  statusCode: number;
-  responseData: {
-    msg: string;
-    bookedAppintments: [
-      {
-        _id: string;
-        startTime: number;
-        endTime: number;
-        startMeridian: string;
-        endMeridian: string;
-        day: number;
-        month: string;
-        year: number;
-        patientData: { firstName: string; lastName: string };
-      }
-    ];
-  };
-}
-
+/**
+ *** FETCH USER ****
+ **/
 export const fetchUser = async function (token: string) {
-  const user: {
-    role?: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    profileImg?: string;
-    token?: string;
-  } = {};
   const decodedToken = jwtDecode(`${token}`) as {
     userID: string;
     role: string;
   };
-  const res = (await apiFetcher(
+  return await fetch(
     `${process.env.NEXT_PUBLIC_Host_Name}/get-user?userID=${decodedToken.userID}`,
     {
       method: "GET",
-    }
-  )) as FetchUserResponse;
-  if (res.statusCode === 200) {
-    const data = res.responseData.userData;
-    user.role = decodedToken.role;
-    user.firstName = data.firstName;
-    user.lastName = data.lastName;
-    user.email = data.email;
-    user.profileImg = data?.profileImg ?? "";
-    user.token = token;
-  }
-  return user;
-};
-
-export const getProfessions = async () => {
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/get-professions`,
-    { method: "GET" }
-  )) as GetProfessionsResponse;
-  return res;
-};
-
-export const getProfession = async (profCode: string) => {
-  const res = await getProfessions();
-  return res?.responseData
-    .filter((profession) => profession.code === profCode)
-    .at(0);
-};
-
-export const getContactsList = async () => {
-  const token = await getToken();
-  const { userID } = jwtDecode(`${token}`) as { userID: string };
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/get-contacts`,
-    {
-      method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     }
-  )) as FetchContactsListResponse;
-  if (res.statusCode === 200) {
-    const contacts = res.responseData?.contacts?.map((contact) => {
-      return { ...contact, userID };
+  )
+    .then((res: Response) => res.json())
+    .then((data: fetchUserResType) => data)
+    .catch((err: Error) => {
+      throw new Error(err.message);
     });
-    res.responseData.contacts = contacts;
-  }
-  return res;
 };
 
-export const getRecentContacts = async () => {
-  const res = await getContactsList();
-  const contacts = res?.responseData.contacts;
-  return contacts?.filter((contact) => contacts.indexOf(contact) < 3);
+/**
+ *** FETCH PROFESSIONS ****
+ **/
+export const fetchProfessions = async () => {
+  return await fetch(`${process.env.NEXT_PUBLIC_Host_Name}/get-professions`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response: Response) => response.json())
+    .then((data: getProfessionsResType) => data)
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
 };
 
-export const getProfessionals = async (profCode: string) => {
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/get-professionals?profCode=${profCode}`,
-    { method: "GET" }
-  )) as GetProfessionalsResponse;
-  return res;
+/**
+ *** FETCH PROFESSION ****
+ **/
+export const fetchProfession = async (code: string) => {
+  // Fetch professions
+  const data = await fetchProfessions();
+  // Get profession
+  const profession = data.responseData.find(
+    (profession) => profession.code === code
+  );
+  return profession;
 };
 
-export const getProfessional = async (profId: string) => {
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/get-professional?username=${profId}`,
-    { method: "GET" }
-  )) as GetProfessionalResponse;
-  return res;
+/**
+ *** FETCH CONTACTS ****
+ **/
+export const fetchContacts = async (limit?: number) => {
+  // Get token
+  const token = await fetchToken();
+  // Send request
+  return await fetch(`${process.env.NEXT_PUBLIC_Host_Name}/get-contacts`, {
+    method: "GET",
+    cache: "no-cache",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response: Response) => response.json())
+    .then((data: fetchContactsResType) => {
+      const contacts = data.responseData.contacts;
+      return {
+        ...data,
+        responseData: {
+          ...data.responseData,
+          contacts: limit ? contacts.slice(0, limit) : contacts,
+        },
+      };
+    });
 };
 
-export const getMessages = async () => {
-  const session = await getSession();
-  const token = session?.token;
-  const contactId = session?.contact?.contactId;
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/get-messages?contactID=${contactId}`,
+/**
+ *** FETCH PROFESSIONALS ****
+ **/
+export const fetchProfessionals = async (code: string) => {
+  return fetch(
+    `${process.env.NEXT_PUBLIC_Host_Name}/get-professionals?profCode=${code}`,
     {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+    }
+  )
+    .then((response: Response) => response.json())
+    .then((data: fetchProfessionalsResType) => data)
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
+};
+
+/**
+ *** FETCH PROFESSIONAL ****
+ **/
+export const fetchProfessional = async (Id: string) => {
+  return await fetch(
+    `${process.env.NEXT_PUBLIC_Host_Name}/get-professional?username=${Id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response: Response) => response.json())
+    .then((data: fetchProfessionalResType) => data)
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
+};
+
+/**
+ *** FETCH MESSAGES ****
+ **/
+export const fetchMessages = async () => {
+  // Fetch session
+  const session = await fetchSession();
+  // Fetch token
+  const token = session.token;
+  // Get contact id
+  const id = session.contact?.id;
+  if (!token || !id) return;
+
+  return await fetch(
+    `${process.env.NEXT_PUBLIC_Host_Name}/get-messages?contactID=${id}`,
+    {
+      method: "GET",
+      cache: "no-cache",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
-  )) as GetMessagesResponse;
-  return res;
+  )
+    .then((response: Response) => response.json())
+    .then((data: fetchMessagesResType) => data)
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
 };
 
-export const getAppointmentDays = async (
-  profID: string,
+/**
+ *** FETCH APPOINTMENT DAYS ****
+ **/
+export const fetchAppointmentDays = async (
+  id: string,
   month: string,
   year: string
 ) => {
-  const res = (await apiFetcher(
-    `${process.env.NEXT_PUBLIC_Host_Name}/get-schedule?professional=${profID}&month=${month}&year=${year}`,
-    { method: "GET" }
-  )) as GetAppointmentsResponse;
-  return res;
+  return await fetch(
+    `${process.env.NEXT_PUBLIC_Host_Name}/get-schedule?professional=${id}&month=${month}&year=${year}`,
+    {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data: fetchAppointmentsResType) => data)
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
 };
 
-export const getMonthAppointments = async (profID: string, date: Date) => {
+/**
+ *** FETCH APPOINTMENTS ****
+ **/
+export const fetchAppointments = async (id: string, date: Date) => {
+  // Get month
   const month = formatDate(date, { month: "long" });
+  // Get year
   const year = String(date.getFullYear());
-  const res = await getAppointmentDays(profID, month, year);
-  const appointments = res?.responseData.appointmentDays;
-  return appointments?.map((app) => `${app.month} ${app.day}`);
+  // Fetch appointments
+  const data = await fetchAppointmentDays(id, month, year);
+  if (data.statusCode === 200) {
+    return data.responseData.appointmentDays.map(
+      (app) => `${app.month} ${app.day}`
+    );
+  }
 };
 
-export const getToken = async () => {
-  const session = await getSession();
+/**
+ *** FETCH TOKEN ****
+ **/
+export const fetchToken = async () => {
+  const session = await fetchSession();
   const token = session?.token;
-  return token;
+  if (token) return token;
 };
 
-export const getSession = async () => {
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
-  if (!session.isLoggedIn) session.isLoggedIn = defaultSession.isLoggedIn;
+/**
+ *** FETCH ROLE ****
+ **/
+export const fetchRole = async () => {
+  const session = await fetchSession();
+  const role = session.user?.role;
+  if (role) return role;
+};
+
+/**
+ *** FETCH SESSION ****
+ **/
+export const fetchSession = async () => {
+  const session = await getIronSession<sessionType>(cookies(), sessionOptions);
   return session;
 };
 
-export const getBookedAppointments = async () => {
-  const token = await getToken();
-  const res = (await apiFetcher(
+/**
+ *** FETCH BOOKED APPOINTMENTS ****
+ **/
+export const fetchBookedAppointments = async () => {
+  const token = await fetchToken();
+  if (!token) return;
+  return await fetch(
     `${process.env.NEXT_PUBLIC_Host_Name}/get-booked-appointments`,
     {
       method: "GET",
+      cache: "no-cache",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
-  )) as GetBookedAppointmentsResponse;
-  return res;
+  )
+    .then((response: Response) => response.json())
+    .then((data: fetchBookedAppointmentsResType) => data)
+    .catch((err: Error) => {
+      throw new Error(err.message);
+    });
 };
 
-export const getUpcomingBookedAppointments = async () => {
-  const res = await getBookedAppointments();
-  const appointments = res?.responseData?.bookedAppintments
-    ?.map((app) => {
+/**
+ *** FETCH UPCOMING APPOINTMENTS ****
+ **/
+export const fetchUpcomingAppointments = async () => {
+  // Fetch booked appointments
+  const data = await fetchBookedAppointments();
+  if (!data?.responseData.bookedAppintments) return;
+  // Get upcoming appointments
+  const appointments = data.responseData.bookedAppintments
+    .map((app) => {
       const hours = getHour(timeMap[app.startTime]);
       const date = new Date(`${app.month} ${app.day} ${app.year}`);
       if (hours) date.setHours(hours);
@@ -303,8 +276,9 @@ export const getUpcomingBookedAppointments = async () => {
         ...app,
       };
     })
-    ?.filter((app) => app.date.getTime() >= new Date().getTime())
-    ?.sort((a, b) => a.date.getTime() - b.date.getTime())
-    ?.filter((_app, index) => index <= 3);
+    .filter((app) => app.date.getTime() >= new Date().getTime())
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
+    .filter((_app, index) => index <= 4);
+  // Return result
   return appointments;
 };

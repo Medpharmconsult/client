@@ -1,22 +1,14 @@
-export default function Card({
-  title,
-  classname = "",
-  spacing = true,
-  children,
-}: {
-  title: string;
-  classname?: string;
-  spacing?: boolean;
-  children: React.ReactNode;
-}) {
+import { cardType } from "../_lib/types";
+
+export default function Card({ title, styles = "", children }: cardType) {
   return (
     <div
-      className={`${classname} bg-white border-grey-300 border-1 rounded-5 overflow-hidden`}
+      className={`${styles} bg-white border-grey-300 border-1 rounded-5 overflow-hidden h-full`}
     >
-      <div className="bg-grey-500 border-grey-300 border-b-1 p-4 h-14 text-[18px]/[24px] tracking-normal font-semibold">
+      <div className="bg-grey-500 border-grey-300 border-b-1 pt-4  px-6 pb-6 h-14 text-[18px]/[24px] tracking-normal font-semibold">
         {title}
       </div>
-      <div className={`${spacing ? "px-4 py-8" : ""}`}>{children}</div>
+      <div className="py-6 px-4 xs:px-6">{children}</div>
     </div>
   );
 }

@@ -1,12 +1,12 @@
-import DashboardScreen from "@/app/ui/dashboard/general/DashboardScreen";
-import SetScheduleUi from "@/app/ui/dashboard/staff/setSchedule/SetScheduleUi";
+import AdminScreen from "@/app/_components/AdminScreen";
+import SetScheduleUi from "@/app/_components/SetScheduleUi";
 export const metadata = {
   title: "Set Schedule",
 };
-export default function SetSchedule() {
+export default function Page() {
   return (
-    <DashboardScreen title="Set schedule">
+    <AdminScreen title="Set schedule">
       <SetScheduleUi />
-    </DashboardScreen>
+    </AdminScreen>
   );
 }

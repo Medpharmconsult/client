@@ -1,12 +1,12 @@
-import SigninForm from "@/app/ui/auth/signin/SigninForm";
+import SigninForm from "@/app/_components/SigninForm";
 
 export const metadata = {
-  title: "Admin Login",
+  title: "Sign In",
 };
 export default function Page() {
   return (
     <div>
-      <SigninForm isAdmin={true} />
+      <SigninForm admin={true} />
     </div>
   );
 }
